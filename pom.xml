@@ -24,6 +24,7 @@
 
 
     <modules>
+        <module>TravelAgencyApp</module>
         <module>flight</module>
         <module>booking</module>
         <module>payment</module>
