@@ -20,37 +20,37 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.myProject</groupId>
+            <groupId>com.myproject</groupId>
             <artifactId>booking</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.myProject</groupId>
+            <groupId>com.myproject</groupId>
             <artifactId>flight</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.myProject</groupId>
+            <groupId>com.myproject</groupId>
             <artifactId>notification</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.myProject</groupId>
+            <groupId>com.myproject</groupId>
             <artifactId>passanger</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.myProject</groupId>
+            <groupId>com.myproject</groupId>
             <artifactId>payment</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.myProject</groupId>
+            <groupId>com.myproject</groupId>
             <artifactId>ticket</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -73,12 +73,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
@@ -87,9 +81,6 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
         </dependency>
-
-
-
 
     </dependencies>
 
