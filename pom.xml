@@ -5,23 +5,20 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.myProject</groupId>
+    <groupId>com.myproject</groupId>
     <artifactId>travel-agency</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>travel-agency</name>
 
     <packaging>pom</packaging>
 
-
     <properties>
         <java.version>21</java.version>
     </properties>
-
-
 
     <modules>
         <module>TravelAgencyApp</module>
@@ -32,6 +29,21 @@
         <module>notification</module>
         <module>passanger</module>
     </modules>
+
+    <repositories>
+        <repository>
+            <id>mvnhub</id>
+            <url>https://mvnhub.ir/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mvnhub</id>
+            <url>https://mvnhub.ir/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 
 </project>

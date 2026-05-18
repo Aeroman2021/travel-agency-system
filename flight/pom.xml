@@ -3,15 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <name>flight</name>
+    <artifactId>flight</artifactId>
 
     <parent>
-        <groupId>com.myProject</groupId>
+        <groupId>com.myproject</groupId>
         <artifactId>travel-agency</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-
-    <artifactId>flight</artifactId>
 
 
     <properties>
