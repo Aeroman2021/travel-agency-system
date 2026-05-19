@@ -16,6 +16,8 @@ public class BookingResponseDto {
 
     Long userId;
 
+    Long FlightId;
+
     BigDecimal totalPrice;
 
     String currencyCode;
