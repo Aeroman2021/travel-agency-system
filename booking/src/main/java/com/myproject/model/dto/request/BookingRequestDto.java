@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class BookingRequestDto {
     Long userId;
-    BigDecimal totalPrice;
+    Long FlightId;
+    int numberOfPassengers;
     String currencyCode;
 
 }

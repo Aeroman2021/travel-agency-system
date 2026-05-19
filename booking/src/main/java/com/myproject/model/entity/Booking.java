@@ -20,6 +20,11 @@ public class Booking {
 
     private Long userId;
 
+    private Long flightId;
+
+    @Column(name = "num_of_passangers")
+    private int numberOfPassengers;
+
     private BigDecimal totalPrice;
 
     @Column(name = "currency_code")
