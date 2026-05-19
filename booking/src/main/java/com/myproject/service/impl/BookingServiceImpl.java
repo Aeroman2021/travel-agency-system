@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +29,8 @@ public class BookingServiceImpl implements BookingService {
 
         var booking = bookingMapper.toEntity(dto);
 
-        var flightPrice = flightFacade.getFlightPriceByFlightId(dto.getFlightId()).price();
-        var totalPrice = flightPrice.multiply(BigDecimal.valueOf(dto.getNumberOfPassengers()));
+        var totalPrice = flightFacade.calculateTotalPrice(dto.getFlightId(),
+                dto.getNumberOfPassengers());
 
         booking.setTotalPrice(totalPrice);
         booking.setBookingStatus(BookingStatus.INITIATED);
