@@ -26,7 +26,7 @@ public class FlightReservationResponseDto {
 
     private BigDecimal price;
 
-    private FlightReservationStatus flightReservationStatus;
+    private FlightReservationStatus status;
 
     private String pnr;
 }

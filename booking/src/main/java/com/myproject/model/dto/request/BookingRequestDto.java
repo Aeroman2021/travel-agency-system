@@ -4,11 +4,11 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 public class BookingRequestDto {
     Long userId;
-    Long FlightId;
+    Long flightId;
     int numberOfPassengers;
     String currencyCode;
-
 }
