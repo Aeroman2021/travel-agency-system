@@ -35,6 +35,7 @@ public class FlightReservationServiceImpl implements FlightReservationService {
         var savedFlightReservation = flightReservationRepository.save(flightReservation);
 
         eventPublisher.publishEvent(new FlightReservedEvent(
+                savedFlightReservation.getFlightId(),
                 event.bookingId(),
                 savedFlightReservation.getPrice(),
                 event.passengerCount()));
