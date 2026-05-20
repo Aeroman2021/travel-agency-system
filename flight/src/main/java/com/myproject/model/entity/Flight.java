@@ -49,4 +49,7 @@ public class Flight {
     @Enumerated(EnumType.STRING)
     private FlightStatus status;
 
+    @Version
+    private Long version;
+
 }
