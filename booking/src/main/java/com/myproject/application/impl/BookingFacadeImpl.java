@@ -6,6 +6,8 @@ import com.myproject.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class BookingFacadeImpl implements BookingFacade {
@@ -18,5 +20,13 @@ public class BookingFacadeImpl implements BookingFacade {
                 .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
                         .formatted("Booking", bookingId)));
         return booking.getNumberOfPassengers();
+    }
+
+    @Override
+    public BigDecimal getTotalPriceById(Long bookingId) {
+        var booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
+                        .formatted("Booking", bookingId)));
+        return booking.getTotalPrice();
     }
 }
