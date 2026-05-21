@@ -33,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private String createGatewayRef() {
-        return UUID.randomUUID().toString().replace("-","").substring(0, 8).toUpperCase();
+        return UUID.randomUUID().toString().replace("-","").substring(0, 10).toUpperCase();
     }
 
 }

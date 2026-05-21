@@ -1,6 +1,7 @@
 package com.myproject.controller;
 
 
+import com.myproject.model.dto.InputPassengers;
 import com.myproject.model.dto.PassengerRequestDto;
 import com.myproject.model.dto.PassengerResponseDto;
 import com.myproject.service.PassengerService;
@@ -9,18 +10,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/passegers")
 @RequiredArgsConstructor
 public class PassengerController {
     private final PassengerService passengerService;
-    @PostMapping("/{booking-id}")
-    public ResponseEntity<PassengerResponseDto> save(
+
+    @PostMapping("booking/{booking-id}/passengers")
+    public ResponseEntity<List<PassengerResponseDto>> save(
             @PathVariable("booking-id") Long bookingId,
-            @RequestBody PassengerRequestDto requestDto){
-        requestDto.setBookingId(bookingId);
-        var flight = passengerService.save(requestDto);
-        return new ResponseEntity<>(flight, HttpStatus.CREATED);
+            @RequestBody List<PassengerRequestDto> requestDtoList) {
+        var savedPassengers = passengerService.save(new InputPassengers(requestDtoList, bookingId));
+        return new ResponseEntity<>(savedPassengers, HttpStatus.CREATED);
 
     }
 }

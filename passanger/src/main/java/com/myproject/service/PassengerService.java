@@ -1,8 +1,10 @@
 package com.myproject.service;
 
-import com.myproject.model.dto.PassengerRequestDto;
+import com.myproject.model.dto.InputPassengers;
 import com.myproject.model.dto.PassengerResponseDto;
 
+import java.util.List;
+
 public interface PassengerService {
-    PassengerResponseDto save(PassengerRequestDto requestDto);
+    List<PassengerResponseDto> save(InputPassengers inputPassengers);
 }
