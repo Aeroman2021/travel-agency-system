@@ -11,16 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FlightReservationCreatedListener
+public class PassengersRegisteredListener {
+    private final PaymentService paymentService;
 
- {
-     private final PaymentService paymentService;
+    @EventListener
+    public void handleFlightBookingInitiated(PassengerRegisteredEvent event) {
 
-     @EventListener
-     public void handleFlightBookingInitiated(PassengerRegisteredEvent event) {
-
-         log.info("Received flight reservation  event: {}",
-                 event.bookingId());
-         paymentService.processPayment(event);
-     }
+        log.info("Received flight reservation  event: {}",
+                event.bookingId());
+        paymentService.processPayment(event);
+    }
 }
