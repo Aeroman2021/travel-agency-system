@@ -21,6 +21,8 @@ public class Passenger {
 
     private Long userId;
 
+    private Long bookingId;
+
     @Column(name = "full_name")
     private String fullName;
 

@@ -14,6 +14,8 @@ public class PassengerResponseDto {
 
     private Long userId;
 
+    private Long bookingId;
+
     private String fullName;
 
     private String ncode;
