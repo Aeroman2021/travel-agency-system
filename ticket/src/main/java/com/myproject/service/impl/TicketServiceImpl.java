@@ -5,7 +5,7 @@ import com.myproject.model.dto.FlightReservationDto;
 import com.myproject.model.dto.response.TicketResponseDto;
 import com.myproject.model.entity.Ticket;
 import com.myproject.model.event.PaymentSucceededEvent;
-import com.myproject.model.event.TicketSuccessfullyIssued;
+import com.myproject.model.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.model.mapper.TicketMapper;
 import com.myproject.repository.TicketRepository;
 import com.myproject.service.TicketService;
@@ -40,35 +40,27 @@ public class TicketServiceImpl implements TicketService {
                     return tickerMapper.toDto(savedTicket);
                 }).toList();
 
-        eventPublisher.publishEvent(generateTicketSuccessfullyIssuedEvent(ticketResponseDtoList, paymentSucceededEvent));
-
+        eventPublisher.publishEvent(generateTicketIssuedEvent(ticketResponseDtoList));
         return ticketResponseDtoList;
     }
 
-
-    private TicketSuccessfullyIssued generateTicketSuccessfullyIssuedEvent(
-            List<TicketResponseDto> ticketResponseDtoList,
-            PaymentSucceededEvent paymentSucceededEvent) {
-
-        List<String> ticketNumebrList = ticketResponseDtoList.stream()
-                .map(TicketResponseDto::getTicketNumber)
+    private TicketSuccessfullyIssuedEvent generateTicketIssuedEvent(
+            List<TicketResponseDto> ticketResponseDtoList) {
+        List<FlightReservationDto> flightReservationDtoList = ticketResponseDtoList.stream()
+                .map(e -> new FlightReservationDto(e.getBookingId(),
+                        e.getPassengerId(),
+                        e.getTicketNumber()))
                 .toList();
-
-        List<Long> passengerIdList = ticketResponseDtoList.stream()
-                .map(TicketResponseDto::getPassengerId)
-                .toList();
-
-        var bookingId = paymentSucceededEvent.bookingId();
-
-        return new TicketSuccessfullyIssued(new FlightReservationDto(ticketNumebrList, passengerIdList, bookingId));
+        return new TicketSuccessfullyIssuedEvent(flightReservationDtoList);
     }
+
 
     private String generateTicketNumber() {
         return UUID
                 .randomUUID()
                 .toString()
                 .replace("-", "")
-                .substring(8)
+                .substring(6)
                 .toUpperCase();
     }
 }
