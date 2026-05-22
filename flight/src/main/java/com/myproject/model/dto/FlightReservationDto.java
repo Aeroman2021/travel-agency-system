@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class FlightReservationDto {
-    List<String> ticketNumebrList;
-    List<Long> passengerIdList;
     Long BookingId;
+    Long passengerId;
+    String ticketNumber;
 }

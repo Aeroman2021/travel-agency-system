@@ -3,11 +3,15 @@ package com.myproject.service.impl;
 import com.myproject.model.dto.response.FlightResvPasgsResponseDto;
 import com.myproject.model.entity.FlightReservationPassenger;
 import com.myproject.model.event.TicketSuccessfullyIssuedEvent;
+import com.myproject.model.maper.FlightReservationPassengerMapper;
 import com.myproject.repository.FlightReservationRepository;
 import com.myproject.repository.FlightResvPsgrsRepository;
 import com.myproject.service.FlightResvPsgrsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -15,25 +19,33 @@ public class FlightResvPagsServiceImpl implements FlightResvPsgrsService {
 
     private final FlightResvPsgrsRepository flightResvPsgrsRepository;
     private final FlightReservationRepository flightReservationRepository;
+    private final FlightReservationPassengerMapper flightReservationPassengerMapper;
 
 
     @Override
-    public FlightResvPasgsResponseDto save(TicketSuccessfullyIssuedEvent event) {
+    public List<FlightResvPasgsResponseDto> save(TicketSuccessfullyIssuedEvent event) {
 
-        var reservationId = flightReservationRepository.
-                findByBookingId(event.flightReservationDto().
-                        getBookingId())
-                .getId();
+        var flightReservationId = getFlightReservationId(event);
 
-        var flightReservationPassenger = new FlightReservationPassenger();
-        flightReservationPassenger.setFlightReservationId(reservationId);
+        return event.flightReservationDtoList().stream()
+                .map(dto -> {
+                    var flightReservationPassenger = new FlightReservationPassenger();
+                    flightReservationPassenger.setPassengerId(dto.getPassengerId());
+                    flightReservationPassenger.setTicketNumber(dto.getTicketNumber());
+                    flightReservationPassenger.setFlightReservationId(flightReservationId);
+                    flightReservationPassenger.setSeatNumber(generateSeatNumber());
+                    return flightResvPsgrsRepository.save(flightReservationPassenger);
+                })
+                .map(flightReservationPassengerMapper::toDto)
+                .toList();
+    }
 
-        for (String s : event.flightReservationDto().getTicketNumebrList()) {
+    private Long getFlightReservationId(TicketSuccessfullyIssuedEvent event) {
+        var bookingId = event.flightReservationDtoList().getFirst().getBookingId();
+        return flightReservationRepository.findByBookingId(bookingId).getId();
+    }
 
-        }
-
-        return null;
-
-
+    private String generateSeatNumber() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 4).toUpperCase();
     }
 }
