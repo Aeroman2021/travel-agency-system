@@ -1,6 +1,5 @@
 package com.myproject.model.listener;
 
-import com.myproject.model.event.BookingInitiatedEvent;
 import com.myproject.model.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.service.FlightResvPsgrsService;
 import lombok.RequiredArgsConstructor;
