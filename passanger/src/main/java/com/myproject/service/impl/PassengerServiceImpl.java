@@ -24,7 +24,8 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public List<PassengerResponseDto> save(InputPassengers inputPassengers) {
 
-        List<PassengerResponseDto> passengerResponseDtos = inputPassengers.getPassengerRequestDtoList()
+        List<PassengerResponseDto> passengerResponseDtos =
+                inputPassengers.getPassengerRequestDtoList()
                 .stream()
                 .map(dto -> {
                     var passenger = passengerMapper.toEntity(dto);
@@ -33,6 +34,8 @@ public class PassengerServiceImpl implements PassengerService {
                 })
                 .map(passengerMapper::toDto)
                 .toList();
+
+        System.out.println("PUBLISHING EVENT");
 
         eventPublisher.publishEvent(
                 new PassengerRegisteredEvent(inputPassengers.getBookingId()));

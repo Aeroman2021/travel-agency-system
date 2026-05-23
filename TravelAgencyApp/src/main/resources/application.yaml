@@ -26,6 +26,12 @@ logging:
 server:
   port: 6060
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
 
 
 
