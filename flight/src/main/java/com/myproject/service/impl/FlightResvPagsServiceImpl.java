@@ -2,7 +2,7 @@ package com.myproject.service.impl;
 
 import com.myproject.model.dto.response.FlightResvPasgsResponseDto;
 import com.myproject.model.entity.FlightReservationPassenger;
-import com.myproject.model.event.TicketSuccessfullyIssuedEvent;
+import com.myproject.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.model.maper.FlightReservationPassengerMapper;
 import com.myproject.repository.FlightReservationRepository;
 import com.myproject.repository.FlightResvPsgrsRepository;

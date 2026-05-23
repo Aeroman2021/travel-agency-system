@@ -4,7 +4,7 @@ import com.myproject.application.FlightFacade;
 import com.myproject.model.dto.request.BookingRequestDto;
 import com.myproject.model.dto.response.BookingResponseDto;
 import com.myproject.model.enums.BookingStatus;
-import com.myproject.model.event.BookingInitiatedEvent;
+import com.myproject.event.BookingInitiatedEvent;
 import com.myproject.model.mapper.BookingMapper;
 import com.myproject.repository.BookingRepository;
 import com.myproject.service.BookingService;

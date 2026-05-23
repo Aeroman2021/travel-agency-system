@@ -1,11 +1,11 @@
 package com.myproject.service.impl;
 
 import com.myproject.application.PassengerFacade;
+import com.myproject.event.PaymentSucceededEvent;
+import com.myproject.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.model.dto.FlightReservationDto;
 import com.myproject.model.dto.response.TicketResponseDto;
 import com.myproject.model.entity.Ticket;
-import com.myproject.event.PaymentSucceededEvent;
-import com.myproject.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.model.mapper.TicketMapper;
 import com.myproject.repository.TicketRepository;
 import com.myproject.service.TicketService;
@@ -36,9 +36,10 @@ public class TicketServiceImpl implements TicketService {
                     ticket.setBookingId(e.getBookingId());
                     ticket.setPassengerId(e.getId());
                     ticket.setTicketNumber(generateTicketNumber());
-                    var savedTicket = ticketRepository.save(ticket);
+                    Ticket savedTicket = ticketRepository.save(ticket);
                     return tickerMapper.toDto(savedTicket);
                 }).toList();
+        System.out.println("init publishing event");
 
         eventPublisher.publishEvent(generateTicketIssuedEvent(ticketResponseDtoList));
         return ticketResponseDtoList;
@@ -46,12 +47,17 @@ public class TicketServiceImpl implements TicketService {
 
     private TicketSuccessfullyIssuedEvent generateTicketIssuedEvent(
             List<TicketResponseDto> ticketResponseDtoList) {
-        List<FlightReservationDto> flightReservationDtoList = ticketResponseDtoList.stream()
-                .map(e -> new FlightReservationDto(e.getBookingId(),
-                        e.getPassengerId(),
-                        e.getTicketNumber()))
-                .toList();
-        return new TicketSuccessfullyIssuedEvent(flightReservationDtoList);
+
+        List<FlightReservationDto> list = ticketResponseDtoList
+                .stream()
+                .map(dto -> {
+                    return new FlightReservationDto(
+                            dto.getBookingId(),
+                            dto.getPassengerId(),
+                            dto.getTicketNumber());
+                }).toList();
+
+        return new TicketSuccessfullyIssuedEvent(list);
     }
 
 
