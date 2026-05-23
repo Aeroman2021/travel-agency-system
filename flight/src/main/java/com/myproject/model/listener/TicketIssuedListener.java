@@ -18,10 +18,7 @@ public class TicketIssuedListener {
     public void handleTicketSuccessfullyIssued(TicketSuccessfullyIssuedEvent event) {
 
         log.info("Received ticket issued event with booking id: {}",
-                event.flightReservationDto().getBookingId());
-
+                event.flightReservationDtoList().getFirst().getBookingId());
         flightResvPsgrsService.save(event);
     }
-
-
 }
