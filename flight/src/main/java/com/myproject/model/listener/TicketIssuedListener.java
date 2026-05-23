@@ -1,6 +1,5 @@
 package com.myproject.model.listener;
 
-import com.myproject.model.event.BookingInitiatedEvent;
 import com.myproject.model.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.service.FlightResvPsgrsService;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +17,7 @@ public class TicketIssuedListener {
     public void handleTicketSuccessfullyIssued(TicketSuccessfullyIssuedEvent event) {
 
         log.info("Received ticket issued event with booking id: {}",
-                event.flightReservationDto().getBookingId());
-
+                event.flightReservationDtoList().getFirst().getBookingId());
         flightResvPsgrsService.save(event);
     }
-
-
 }
