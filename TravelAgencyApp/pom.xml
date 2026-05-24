@@ -6,7 +6,7 @@
     <name>TravelAgencyApp</name>
 
     <parent>
-        <groupId>com.myProject</groupId>
+        <groupId>com.myproject</groupId>
         <artifactId>travel-agency</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
