@@ -22,4 +22,10 @@ public class PassengerFacadeImpl implements PassengerFacade {
                 .map(passengerMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public void deletePassengerByBookingId(Long bookingId) {
+        passengerRepository.deletePassengerByBookingId(bookingId);
+    }
+
 }

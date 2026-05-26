@@ -1,8 +1,10 @@
 package com.myproject.service.impl;
 
 import com.myproject.event.PassengerRegisteredEvent;
+import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.InputPassengers;
 import com.myproject.model.dto.PassengerResponseDto;
+import com.myproject.model.entity.Passenger;
 import com.myproject.model.mapper.PassengerMapper;
 import com.myproject.repository.PassengerRepository;
 import com.myproject.service.PassengerService;
@@ -39,7 +41,13 @@ public class PassengerServiceImpl implements PassengerService {
 
         eventPublisher.publishEvent(
                 new PassengerRegisteredEvent(inputPassengers.getBookingId()));
-
         return passengerResponseDtos;
     }
+
+    @Override
+    @Transactional
+    public void deletePassengerByBookingId(Long bookingId) {
+        passengerRepository.deletePassengerByBookingId(bookingId);
+    }
+
 }
