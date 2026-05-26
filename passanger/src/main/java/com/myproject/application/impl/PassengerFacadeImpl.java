@@ -18,4 +18,10 @@ public class PassengerFacadeImpl implements PassengerFacade {
     public List<PassengerResponseDto> getPassengerByBookId(Long bookId) {
         return passengerRepository.getPassengersByBookingId(bookId);
     }
+
+    @Override
+    public void deletePassengerByBookingId(Long bookingId) {
+        passengerRepository.deletePassengerByBookingId(bookingId);
+    }
+
 }

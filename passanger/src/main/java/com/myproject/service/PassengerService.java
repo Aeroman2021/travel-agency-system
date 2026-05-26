@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PassengerService {
     List<PassengerResponseDto> save(InputPassengers inputPassengers);
+    void deletePassengerByBookingId(Long bookingId);
 }
