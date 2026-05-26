@@ -1,5 +1,6 @@
-package com.myproject.model.dto;
+package com.myproject.model.dto.response;
 
+import com.myproject.model.enums.PassengerStatus;
 import com.myproject.model.enums.Sex;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,5 +26,7 @@ public class PassengerResponseDto {
     private Sex sex;
 
     private LocalDate dob;
+
+    PassengerStatus passengerStatus;
 
 }

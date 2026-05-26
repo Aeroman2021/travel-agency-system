@@ -1,4 +1,4 @@
-package com.myproject.model.dto;
+package com.myproject.model.dto.request;
 
 import com.myproject.model.enums.Sex;
 import lombok.Getter;

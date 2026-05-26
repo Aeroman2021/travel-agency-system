@@ -1,7 +1,7 @@
 package com.myproject.model.mapper;
 
-import com.myproject.model.dto.PassengerRequestDto;
-import com.myproject.model.dto.PassengerResponseDto;
+import com.myproject.model.dto.request.PassengerRequestDto;
+import com.myproject.model.dto.response.PassengerResponseDto;
 import com.myproject.model.entity.Passenger;
 import org.mapstruct.Mapper;
 
