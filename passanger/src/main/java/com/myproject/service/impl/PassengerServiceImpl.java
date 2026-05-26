@@ -1,10 +1,9 @@
 package com.myproject.service.impl;
 
 import com.myproject.event.PassengerRegisteredEvent;
-import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.InputPassengers;
-import com.myproject.model.dto.PassengerResponseDto;
-import com.myproject.model.entity.Passenger;
+import com.myproject.model.dto.response.PassengerResponseDto;
+import com.myproject.model.enums.PassengerStatus;
 import com.myproject.model.mapper.PassengerMapper;
 import com.myproject.repository.PassengerRepository;
 import com.myproject.service.PassengerService;
@@ -45,10 +44,19 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
+    @Transactional
     public void cancelPassengerByBookingId(Long bookingId) {
         passengerRepository.findPassengersByBookingId(bookingId)
+                .forEach(e -> e.setPassengerStatus(PassengerStatus.CANCELLED));
+
+    }
+
+    @Override
+    public List<PassengerResponseDto> getPassengersByBookingId(Long bookingId) {
+        return passengerRepository.getPassengersByBookingId(bookingId)
                 .stream()
-                .map(e->e.setB)
+                .map(passengerMapper::toDto)
+                .toList();
     }
 
 

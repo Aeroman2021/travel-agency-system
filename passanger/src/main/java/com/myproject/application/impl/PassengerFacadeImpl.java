@@ -1,9 +1,8 @@
 package com.myproject.application.impl;
 
 import com.myproject.application.PassengerFacade;
-import com.myproject.model.dto.PassengerResponseDto;
-import com.myproject.model.mapper.PassengerMapper;
-import com.myproject.repository.PassengerRepository;
+import com.myproject.model.dto.response.PassengerResponseDto;
+import com.myproject.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,24 +12,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PassengerFacadeImpl implements PassengerFacade {
 
-    private final PassengerRepository passengerRepository;
-    private final PassengerMapper passengerMapper;
+    private final PassengerService passengerService;
 
     @Override
     public List<PassengerResponseDto> getPassengerByBookId(Long bookId) {
-        return passengerRepository.getPassengersByBookingId(bookId).stream()
-                .map(passengerMapper::toDto)
-                .toList();
-    }
-
-    @Override
-    public void deletePassengerByBookingId(Long bookingId) {
-        passengerRepository.deletePassengerByBookingId(bookingId);
+        return passengerService.getPassengersByBookingId(bookId);
     }
 
     @Override
     public void cancelPassengerByBookingId(Long bookingId) {
-
+        passengerService.cancelPassengerByBookingId(bookingId);
     }
 
 }
