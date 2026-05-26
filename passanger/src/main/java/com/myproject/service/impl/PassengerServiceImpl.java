@@ -42,9 +42,11 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    @Transactional
-    public void deletePassengerByBookingId(Long bookingId) {
-        passengerRepository.deletePassengerByBookingId(bookingId);
+    public void cancelPassengerByBookingId(Long bookingId) {
+        passengerRepository.findPassengersByBookingId(bookingId)
+                .stream()
+                .map(e->e.setB)
     }
+
 
 }

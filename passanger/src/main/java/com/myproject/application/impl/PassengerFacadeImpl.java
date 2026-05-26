@@ -24,4 +24,9 @@ public class PassengerFacadeImpl implements PassengerFacade {
         passengerRepository.deletePassengerByBookingId(bookingId);
     }
 
+    @Override
+    public void cancelPassengerByBookingId(Long bookingId) {
+
+    }
+
 }
