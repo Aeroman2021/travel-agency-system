@@ -1,6 +1,7 @@
 package com.myproject.service.impl;
 
-import com.myproject.application.FlightFacade;
+import com.myproject.application.flightfacade.FlightFacade;
+import com.myproject.application.flightreservationfacade.FlightReservationFacade;
 import com.myproject.model.dto.request.BookingRequestDto;
 import com.myproject.model.dto.response.BookingResponseDto;
 import com.myproject.model.enums.BookingStatus;
