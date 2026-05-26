@@ -1,6 +1,6 @@
 package com.myproject.model.listener;
 
-import com.myproject.model.event.BookingInitiatedEvent;
+import com.myproject.event.BookingInitiatedEvent;
 import com.myproject.service.FlightReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

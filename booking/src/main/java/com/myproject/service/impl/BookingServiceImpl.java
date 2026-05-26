@@ -1,10 +1,11 @@
 package com.myproject.service.impl;
 
-import com.myproject.application.FlightFacade;
+import com.myproject.application.flightfacade.FlightFacade;
+import com.myproject.application.flightreservationfacade.FlightReservationFacade;
 import com.myproject.model.dto.request.BookingRequestDto;
 import com.myproject.model.dto.response.BookingResponseDto;
 import com.myproject.model.enums.BookingStatus;
-import com.myproject.model.event.BookingInitiatedEvent;
+import com.myproject.event.BookingInitiatedEvent;
 import com.myproject.model.mapper.BookingMapper;
 import com.myproject.repository.BookingRepository;
 import com.myproject.service.BookingService;

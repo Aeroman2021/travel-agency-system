@@ -2,7 +2,8 @@ package com.myproject.service.impl;
 
 import com.myproject.event.PassengerRegisteredEvent;
 import com.myproject.model.dto.InputPassengers;
-import com.myproject.model.dto.PassengerResponseDto;
+import com.myproject.model.dto.response.PassengerResponseDto;
+import com.myproject.model.enums.PassengerStatus;
 import com.myproject.model.mapper.PassengerMapper;
 import com.myproject.repository.PassengerRepository;
 import com.myproject.service.PassengerService;
@@ -24,7 +25,8 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public List<PassengerResponseDto> save(InputPassengers inputPassengers) {
 
-        List<PassengerResponseDto> passengerResponseDtos = inputPassengers.getPassengerRequestDtoList()
+        List<PassengerResponseDto> passengerResponseDtos =
+                inputPassengers.getPassengerRequestDtoList()
                 .stream()
                 .map(dto -> {
                     var passenger = passengerMapper.toEntity(dto);
@@ -34,9 +36,28 @@ public class PassengerServiceImpl implements PassengerService {
                 .map(passengerMapper::toDto)
                 .toList();
 
+        System.out.println("PUBLISHING EVENT");
+
         eventPublisher.publishEvent(
                 new PassengerRegisteredEvent(inputPassengers.getBookingId()));
-
         return passengerResponseDtos;
     }
+
+    @Override
+    @Transactional
+    public void cancelPassengerByBookingId(Long bookingId) {
+        passengerRepository.findPassengersByBookingId(bookingId)
+                .forEach(e -> e.setPassengerStatus(PassengerStatus.CANCELLED));
+
+    }
+
+    @Override
+    public List<PassengerResponseDto> getPassengersByBookingId(Long bookingId) {
+        return passengerRepository.getPassengersByBookingId(bookingId)
+                .stream()
+                .map(passengerMapper::toDto)
+                .toList();
+    }
+
+
 }

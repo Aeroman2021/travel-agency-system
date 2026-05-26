@@ -2,8 +2,8 @@ package com.myproject.controller;
 
 
 import com.myproject.model.dto.InputPassengers;
-import com.myproject.model.dto.PassengerRequestDto;
-import com.myproject.model.dto.PassengerResponseDto;
+import com.myproject.model.dto.request.PassengerRequestDto;
+import com.myproject.model.dto.response.PassengerResponseDto;
 import com.myproject.service.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,5 @@ public class PassengerController {
             @RequestBody List<PassengerRequestDto> requestDtoList) {
         var savedPassengers = passengerService.save(new InputPassengers(requestDtoList, bookingId));
         return new ResponseEntity<>(savedPassengers, HttpStatus.CREATED);
-
     }
 }

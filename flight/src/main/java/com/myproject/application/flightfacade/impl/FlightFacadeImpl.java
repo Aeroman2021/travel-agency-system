@@ -1,10 +1,12 @@
-package com.myproject.application;
+package com.myproject.application.flightfacade.impl;
 
+import com.myproject.application.flightfacade.FlightFacade;
 import com.myproject.exception.InvalidInputSeatNumber;
 import com.myproject.exception.NoAvailableSeatsException;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.entity.Flight;
 import com.myproject.repository.FlightRepository;
+import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,17 @@ public class FlightFacadeImpl implements FlightFacade {
     private final FlightRepository flightRepository;
 
     @Override
-    public FlightPricingDto getFlightPrice(Long flightId) {
-        var flight = getFlightOrThrow(flightId);
-        return new FlightPricingDto(flightId,flight.getPrice());
+    @Transactional
+    public void releaseSeats(Long flightId, int seatCount) {
+        var flight = getById(flightId);
+        var updatedSeat = getById(flightId).getAvailableSeats() + seatCount;
+        flight.setAvailableSeats(updatedSeat);
+    }
+
+    public Flight getById(Long flightId) {
+        return flightRepository.findById(flightId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
+                        .formatted("Flight", flightId)));
     }
 
     @Override
@@ -36,7 +46,7 @@ public class FlightFacadeImpl implements FlightFacade {
         validatePassengersCount(passengerCount);
 
         if(getFlightOrThrow(flightId).getAvailableSeats() < passengerCount)
-             throw new NoAvailableSeatsException("Not enough seat available");
+            throw new NoAvailableSeatsException("Not enough seat available");
     }
 
     private static void validatePassengersCount(int passengerCount) {
@@ -49,4 +59,5 @@ public class FlightFacadeImpl implements FlightFacade {
                 .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
                         .formatted("Flight", flightId)));
     }
+
 }

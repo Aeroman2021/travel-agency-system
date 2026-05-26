@@ -1,5 +1,6 @@
 package com.myproject.model.dto;
 
+import com.myproject.model.dto.request.PassengerRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

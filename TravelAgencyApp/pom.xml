@@ -6,7 +6,7 @@
     <name>TravelAgencyApp</name>
 
     <parent>
-        <groupId>com.myProject</groupId>
+        <groupId>com.myproject</groupId>
         <artifactId>travel-agency</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -80,6 +80,11 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
     </dependencies>
