@@ -1,5 +1,6 @@
 package com.myproject.model.entity;
 
+import com.myproject.model.enums.PassengerStatus;
 import com.myproject.model.enums.Sex;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,8 @@ public class Passenger {
 
     @Column(name = "date_of_birth")
     private LocalDate dob;
+
+    @Enumerated(EnumType.STRING)
+    private PassengerStatus passengerStatus;
 
 }

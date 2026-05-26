@@ -24,6 +24,5 @@ public class PassengerController {
             @RequestBody List<PassengerRequestDto> requestDtoList) {
         var savedPassengers = passengerService.save(new InputPassengers(requestDtoList, bookingId));
         return new ResponseEntity<>(savedPassengers, HttpStatus.CREATED);
-
     }
 }
