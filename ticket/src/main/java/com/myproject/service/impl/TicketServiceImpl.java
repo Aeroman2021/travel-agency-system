@@ -1,18 +1,13 @@
 package com.myproject.service.impl;
 
 import com.myproject.application.PassengerFacade;
+import com.myproject.event.PaymentSucceededEvent;
+import com.myproject.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.FlightReservationDto;
 import com.myproject.model.dto.response.TicketResponseDto;
 import com.myproject.model.entity.Ticket;
 import com.myproject.model.enums.TicketStatus;
-import com.myproject.model.event.PaymentSucceededEvent;
-import com.myproject.model.event.TicketSuccessfullyIssuedEvent;
-import com.myproject.event.PaymentSucceededEvent;
-import com.myproject.event.TicketSuccessfullyIssuedEvent;
-import com.myproject.model.dto.FlightReservationDto;
-import com.myproject.model.dto.response.TicketResponseDto;
-import com.myproject.model.entity.Ticket;
 import com.myproject.model.mapper.TicketMapper;
 import com.myproject.repository.TicketRepository;
 import com.myproject.service.TicketService;
@@ -33,10 +28,10 @@ public class TicketServiceImpl implements TicketService {
     private final PassengerFacade passengerFacade;
     private final ApplicationEventPublisher eventPublisher;
 
+
     @Override
     public List<TicketResponseDto> issueTicket(PaymentSucceededEvent paymentSucceededEvent) {
-
-        List<TicketResponseDto> ticketResponseDtoList = passengerFacade
+                List<TicketResponseDto> ticketResponseDtoList = passengerFacade
                 .getPassengerByBookId(paymentSucceededEvent.bookingId())
                 .stream()
                 .map(e -> {
@@ -53,7 +48,7 @@ public class TicketServiceImpl implements TicketService {
         return ticketResponseDtoList;
     }
 
-    private TicketSuccessfullyIssuedEvent generateTicketIssuedEvent(
+        private TicketSuccessfullyIssuedEvent generateTicketIssuedEvent(
             List<TicketResponseDto> ticketResponseDtoList) {
 
         List<FlightReservationDto> list = ticketResponseDtoList
@@ -68,18 +63,6 @@ public class TicketServiceImpl implements TicketService {
         return new TicketSuccessfullyIssuedEvent(list);
     }
 
-
-
-
-    private String generateTicketNumber() {
-        return UUID
-                .randomUUID()
-                .toString()
-                .replace("-", "")
-                .substring(6)
-                .toUpperCase();
-    }
-
     @Override
     @Transactional
     public void cancelTicketByBookingId(Long bookingId) {
@@ -92,4 +75,14 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new ResourceNotFoundException("%s with bookingId %d not found"
                         .formatted("Ticket", bookingId)));
     }
+
+    private String generateTicketNumber() {
+        return UUID
+                .randomUUID()
+                .toString()
+                .replace("-", "")
+                .substring(6)
+                .toUpperCase();
+    }
+
 }
