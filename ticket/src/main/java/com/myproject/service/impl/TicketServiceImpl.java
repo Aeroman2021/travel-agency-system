@@ -1,14 +1,17 @@
 package com.myproject.service.impl;
 
 import com.myproject.application.PassengerFacade;
+import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.FlightReservationDto;
 import com.myproject.model.dto.response.TicketResponseDto;
 import com.myproject.model.entity.Ticket;
+import com.myproject.model.enums.TicketStatus;
 import com.myproject.model.event.PaymentSucceededEvent;
 import com.myproject.model.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.model.mapper.TicketMapper;
 import com.myproject.repository.TicketRepository;
 import com.myproject.service.TicketService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -55,6 +58,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
 
+
+
     private String generateTicketNumber() {
         return UUID
                 .randomUUID()
@@ -62,5 +67,18 @@ public class TicketServiceImpl implements TicketService {
                 .replace("-", "")
                 .substring(6)
                 .toUpperCase();
+    }
+
+    @Override
+    @Transactional
+    public void cancelTicketByBookingId(Long bookingId) {
+        var ticket =  getTicketByBookingId(bookingId);
+        ticket.setTicketStatus(TicketStatus.CANCELLED);
+    }
+
+    private Ticket getTicketByBookingId(Long bookingId) {
+        return ticketRepository.findTicketByBookingId(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with bookingId %d not found"
+                        .formatted("Ticket", bookingId)));
     }
 }
