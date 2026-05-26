@@ -1,9 +1,10 @@
-package com.myproject.application;
+package com.myproject.application.flightfacade;
 
 import java.math.BigDecimal;
 
 public interface FlightFacade {
-    FlightPricingDto getFlightPrice(Long flightId);
+    void releaseSeats(Long flightId,int seatCount);
     BigDecimal calculateTotalPrice(Long flightId, int passengerCount);
     void hasAvailableSeats(Long flightId, int passengerCount);
+
 }

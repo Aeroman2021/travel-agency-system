@@ -10,12 +10,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
 
-#  flyway:
-#    enabled: true
-#    baseline-on-migrate: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 
 logging:
   level:
@@ -25,6 +25,12 @@ logging:
 
 server:
   port: 6060
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 
 

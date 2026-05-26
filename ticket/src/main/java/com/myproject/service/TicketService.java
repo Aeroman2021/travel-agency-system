@@ -1,8 +1,10 @@
 package com.myproject.service;
 
 import com.myproject.model.dto.response.TicketResponseDto;
-import com.myproject.model.event.PaymentSucceededEvent;
+import com.myproject.event.PaymentSucceededEvent;
+
+import java.util.List;
 
 public interface TicketService {
-    TicketResponseDto issueTicket(PaymentSucceededEvent paymentSucceededEvent);
+    List<TicketResponseDto> issueTicket(PaymentSucceededEvent paymentSucceededEvent);
 }

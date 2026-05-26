@@ -1,4 +1,4 @@
-package com.myproject.model.event;
+package com.myproject.event;
 
 public record PaymentSucceededEvent(
         Long bookingId,
