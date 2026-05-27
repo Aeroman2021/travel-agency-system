@@ -1,5 +1,6 @@
 package com.myproject.service.impl;
 
+import com.myproject.event.SagaFlightReservedEvent;
 import com.myproject.model.dto.response.FlightReservationResponseDto;
 import com.myproject.model.entity.FlightReservation;
 import com.myproject.model.enums.FlightReservationStatus;
@@ -39,6 +40,14 @@ public class FlightReservationServiceImpl implements FlightReservationService {
                 event.bookingId(),
                 savedFlightReservation.getPrice(),
                 event.passengerCount()));
+
+        eventPublisher.publishEvent(new SagaFlightReservedEvent(
+                savedFlightReservation.getFlightId(),
+                event.bookingId(),
+                savedFlightReservation.getPrice(),
+                event.passengerCount()));
+
+
         return flightReservationMapper.toDto(savedFlightReservation);
     }
 
