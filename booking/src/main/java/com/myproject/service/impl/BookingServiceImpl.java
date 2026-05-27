@@ -1,11 +1,11 @@
 package com.myproject.service.impl;
 
 import com.myproject.application.flightfacade.FlightFacade;
-import com.myproject.application.flightreservationfacade.FlightReservationFacade;
+import com.myproject.event.BookingInitiatedEvent;
+import com.myproject.event.SagaBookingInitiatedEvent;
 import com.myproject.model.dto.request.BookingRequestDto;
 import com.myproject.model.dto.response.BookingResponseDto;
 import com.myproject.model.enums.BookingStatus;
-import com.myproject.event.BookingInitiatedEvent;
 import com.myproject.model.mapper.BookingMapper;
 import com.myproject.repository.BookingRepository;
 import com.myproject.service.BookingService;
@@ -39,6 +39,10 @@ public class BookingServiceImpl implements BookingService {
         var savedBooking = bookingRepository.save(booking);
 
         eventPublisher.publishEvent(new BookingInitiatedEvent(savedBooking.getId(),
+                savedBooking.getFlightId(),
+                savedBooking.getNumberOfPassengers()));
+
+        eventPublisher.publishEvent(new SagaBookingInitiatedEvent(savedBooking.getId(),
                 savedBooking.getFlightId(),
                 savedBooking.getNumberOfPassengers()));
 
