@@ -28,6 +28,8 @@
         <module>ticket</module>
         <module>notification</module>
         <module>passanger</module>
+        <module>saga</module>
+        <module>saga-contract</module>
     </modules>
 
     <repositories>
