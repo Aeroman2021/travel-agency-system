@@ -1,6 +1,7 @@
 package com.myproject.service.impl;
 
 import com.myproject.event.PassengerRegisteredEvent;
+import com.myproject.event.SagaPassengerRegisteredEvent;
 import com.myproject.model.dto.InputPassengers;
 import com.myproject.model.dto.response.PassengerResponseDto;
 import com.myproject.model.enums.PassengerStatus;
@@ -36,10 +37,14 @@ public class PassengerServiceImpl implements PassengerService {
                 .map(passengerMapper::toDto)
                 .toList();
 
-        System.out.println("PUBLISHING EVENT");
+
 
         eventPublisher.publishEvent(
                 new PassengerRegisteredEvent(inputPassengers.getBookingId()));
+
+        eventPublisher.publishEvent(
+                new SagaPassengerRegisteredEvent(inputPassengers.getBookingId()));
+
         return passengerResponseDtos;
     }
 
