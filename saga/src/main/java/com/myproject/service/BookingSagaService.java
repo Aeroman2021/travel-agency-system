@@ -1,9 +1,15 @@
 package com.myproject.service;
 
-import com.myproject.model.dto.request.BookingSagaRequestDto;
-import com.myproject.model.dto.request.BookingSagaResponseDto;
-import com.myproject.model.dto.response.BookingResponseDto;
+import com.myproject.event.FlightReservedEvent;
+import com.myproject.event.PassengerRegisteredEvent;
+import com.myproject.event.PaymentSucceededEvent;
+import com.myproject.event.TicketSuccessfullyIssuedEvent;
+import com.myproject.event.BookingInitiatedEvent;
 
 public interface BookingSagaService {
-    BookingSagaResponseDto startSaga(BookingSagaRequestDto requestDto);
+    void handleBookingInitiated(BookingInitiatedEvent event);
+    void handleFlightReserved(FlightReservedEvent event);
+    void handlePassengerRegistered(PassengerRegisteredEvent event);
+    void handlePaymentSucceeded(PaymentSucceededEvent event);
+    void handleTicketIssued(TicketSuccessfullyIssuedEvent event);
 }

@@ -1,6 +1,7 @@
 package com.myproject.listener;
 
-import com.myproject.event.BookingInitiatedEvent;
+import com.myproject.event.FlightReservedEvent;
+import com.myproject.model.dto.request.BookingSagaRequestDto;
 import com.myproject.service.BookingSagaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class BookingInitiatedListener {
+public class FlightReservedListener {
 
     private final BookingSagaService bookingSagaService;
 
     @EventListener
-    public void onBookingInitiated(BookingInitiatedEvent event) {
-        log.info("Received Booking  event: {}", event.bookingId());
-        bookingSagaService.handleBookingInitiated(event);
+    public void onFlightReserved(FlightReservedEvent event) {
+        log.info("Received flight reservation  event with booking id: {}", event.bookingId());
+        bookingSagaService.handleFlightReserved(event);
     }
+
 }

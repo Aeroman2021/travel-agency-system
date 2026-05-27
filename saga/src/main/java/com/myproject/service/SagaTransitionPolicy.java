@@ -1,18 +1,14 @@
-package com.myproject.model.enums;
+package com.myproject.service;
 
-public enum SagaStep {
-    BOOKING_CREATED,
+import com.myproject.model.enums.SagaStep;
+import org.springframework.stereotype.Component;
 
-    FLIGHT_RESERVED,
+import static com.myproject.model.enums.SagaStep.*;
 
-    PASSENGERS_REGISTERED,
+@Component
+public class SagaTransitionPolicy {
 
-    PAYMENT_COMPLETED,
-
-    TICKET_ISSUED;
-
-
-    public  static SagaStep nextStep(SagaStep step){
+    public   SagaStep nextStep(SagaStep step){
         return switch (step){
             case BOOKING_CREATED -> FLIGHT_RESERVED;
             case FLIGHT_RESERVED -> PASSENGERS_REGISTERED;
