@@ -31,5 +31,4 @@ public class BookingSaga {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-
-}
+    }
