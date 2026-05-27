@@ -3,6 +3,7 @@ package com.myproject.service.impl;
 import com.myproject.application.BookingFacade;
 import com.myproject.event.PassengerRegisteredEvent;
 import com.myproject.event.PaymentSucceededEvent;
+import com.myproject.event.SagaPaymentSucceededEvent;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.response.PaymentResponseDto;
 import com.myproject.model.entity.Payment;
@@ -39,6 +40,12 @@ public class PaymentServiceImpl implements PaymentService {
         var savedPayment = paymentRepository.save(payment);
         eventPublisher.publishEvent(
                 new PaymentSucceededEvent(
+                        event.bookingId(),
+                        savedPayment.getId(),
+                        savedPayment.getGatewayRef()));
+
+        eventPublisher.publishEvent(
+                new SagaPaymentSucceededEvent(
                         event.bookingId(),
                         savedPayment.getId(),
                         savedPayment.getGatewayRef()));
