@@ -1,6 +1,6 @@
-package com.myproject.model.event;
+package com.myproject.event;
 
 
 public record BookingInitiatedEvent(Long bookingId,Long flightId, int passengerCount
-) {
+){
 }
