@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class FlightReservationDto {
-    Long BookingId;
     Long passengerId;
     String ticketNumber;
 }

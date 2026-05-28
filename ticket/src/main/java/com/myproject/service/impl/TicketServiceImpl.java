@@ -1,7 +1,9 @@
 package com.myproject.service.impl;
 
+import com.myproject.TicketIssueResult;
 import com.myproject.application.PassengerFacade;
 import com.myproject.event.PaymentSucceededEvent;
+import com.myproject.event.SagaTicketSuccessfullyIssuedEvent;
 import com.myproject.event.TicketSuccessfullyIssuedEvent;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.FlightReservationDto;
@@ -31,8 +33,10 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketResponseDto> issueTicket(PaymentSucceededEvent paymentSucceededEvent) {
-                List<TicketResponseDto> ticketResponseDtoList = passengerFacade
-                .getPassengerByBookId(paymentSucceededEvent.bookingId())
+
+        var bookingId = paymentSucceededEvent.bookingId();
+        List<TicketResponseDto> ticketResponseDtoList = passengerFacade
+                .getPassengerByBookId(bookingId)
                 .stream()
                 .map(e -> {
                     Ticket ticket = new Ticket();
@@ -42,26 +46,33 @@ public class TicketServiceImpl implements TicketService {
                     Ticket savedTicket = ticketRepository.save(ticket);
                     return tickerMapper.toDto(savedTicket);
                 }).toList();
-        System.out.println("init publishing event");
 
-        eventPublisher.publishEvent(generateTicketIssuedEvent(ticketResponseDtoList));
+        eventPublisher.publishEvent(generateTicketIssuedEvent(ticketResponseDtoList,bookingId));
+        eventPublisher.publishEvent(generateSagaTicketIssuedEvent(ticketResponseDtoList,bookingId));
         return ticketResponseDtoList;
     }
 
-        private TicketSuccessfullyIssuedEvent generateTicketIssuedEvent(
-            List<TicketResponseDto> ticketResponseDtoList) {
+    private TicketSuccessfullyIssuedEvent generateTicketIssuedEvent(
+            List<TicketResponseDto> ticketResponseDtoList,Long bookingId) {
 
         List<FlightReservationDto> list = ticketResponseDtoList
                 .stream()
-                .map(dto -> {
-                    return new FlightReservationDto(
-                            dto.getBookingId(),
-                            dto.getPassengerId(),
-                            dto.getTicketNumber());
-                }).toList();
+                .map(dto -> new FlightReservationDto(
+                        dto.getPassengerId(),
+                        dto.getTicketNumber())).toList();
 
-        return new TicketSuccessfullyIssuedEvent(list);
+        return new TicketSuccessfullyIssuedEvent(list,bookingId);
     }
+
+    private SagaTicketSuccessfullyIssuedEvent generateSagaTicketIssuedEvent(
+            List<TicketResponseDto> ticketResponseDtoList,Long bookingId) {
+        var ticketIssueResults = ticketResponseDtoList.stream()
+                .map(e -> new TicketIssueResult(e.getPassengerId(), e.getTicketNumber()))
+                .toList();
+
+        return new SagaTicketSuccessfullyIssuedEvent(ticketIssueResults,bookingId);
+    }
+
 
     @Override
     @Transactional
