@@ -5,7 +5,7 @@ import com.myproject.model.dto.FlightReservationDto;
 import java.util.List;
 
 public record TicketSuccessfullyIssuedEvent(
-       List<FlightReservationDto> flightReservationDtoList
-
+       List<FlightReservationDto> flightReservationDtoList,
+       Long bookingId
 ) {
 }
