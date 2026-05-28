@@ -1,7 +1,8 @@
 package com.myproject.model.entity;
 
-import com.myproject.model.enums.SagaStatus;
-import com.myproject.model.enums.SagaStep;
+
+import com.myproject.enums.SagaStatus;
+import com.myproject.enums.SagaStep;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
