@@ -1,4 +1,4 @@
-package com.myproject.model.listener;
+package com.myproject.listener;
 
 import com.myproject.event.PaymentSucceededEvent;
 import com.myproject.service.TicketService;

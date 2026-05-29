@@ -23,12 +23,6 @@ public class FlightReservationFacadeImpl implements FlightReservationFacade {
 
     @Override
     @Transactional
-    public void cancelFlightReservation(Long flightReservationId) {
-        getById(flightReservationId).setStatus(FlightReservationStatus.CANCELLED);
-    }
-
-    @Override
-    @Transactional
     public void failFlightReservation(Long flightReservationId) {
         getById(flightReservationId).setStatus(FlightReservationStatus.CANCELLED);
     }

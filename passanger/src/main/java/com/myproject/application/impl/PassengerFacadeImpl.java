@@ -19,9 +19,4 @@ public class PassengerFacadeImpl implements PassengerFacade {
         return passengerService.getPassengersByBookingId(bookId);
     }
 
-    @Override
-    public void cancelPassengerByBookingId(Long bookingId) {
-        passengerService.cancelPassengerByBookingId(bookingId);
-    }
-
 }

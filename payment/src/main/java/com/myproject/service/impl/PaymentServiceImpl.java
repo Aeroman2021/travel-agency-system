@@ -3,7 +3,8 @@ package com.myproject.service.impl;
 import com.myproject.application.BookingFacade;
 import com.myproject.event.PassengerRegisteredEvent;
 import com.myproject.event.PaymentSucceededEvent;
-import com.myproject.event.SagaPaymentSucceededEvent;
+import com.myproject.event.progressevents.SagaPaymentSucceededEvent;
+import com.myproject.event.compensationevents.RefundPaymentEvent;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.response.PaymentResponseDto;
 import com.myproject.model.entity.Payment;
@@ -11,7 +12,6 @@ import com.myproject.model.enums.PaymentStatus;
 import com.myproject.model.mapper.PaymentMapper;
 import com.myproject.repository.PaymentRepository;
 import com.myproject.service.PaymentService;
-import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,7 +27,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
     private final BookingFacade bookingFacade;
     private final ApplicationEventPublisher eventPublisher;
-
 
     @Override
     public PaymentResponseDto processPayment(PassengerRegisteredEvent event) {
@@ -59,18 +58,17 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    @Transactional
-    public void refundPayment(Long paymentId) {
-        var payment = getPayment(paymentId);
+    public void refundPayment(RefundPaymentEvent event) {
+        var payment = findPaymentByBookingId(event.bookingId());
         if(payment.getStatus() == PaymentStatus.REFUNDED)
             return;
-        getPayment(paymentId).setStatus(PaymentStatus.REFUNDED);
+        payment.setStatus(PaymentStatus.REFUNDED);
     }
 
-    private @NonNull Payment getPayment(Long paymentId) {
-        return paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
-                        .formatted("Payment", paymentId)));
+    private @NonNull Payment findPaymentByBookingId(Long bookingId) {
+        return paymentRepository.findPaymentByBookingId(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with bookingId %d not found"
+                        .formatted("Payment", bookingId)));
     }
 
 }
