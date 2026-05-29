@@ -3,6 +3,8 @@ package com.myproject.service.impl;
 import com.myproject.enums.SagaStatus;
 import com.myproject.event.SagaEvent;
 import com.myproject.event.compensationevents.*;
+import com.myproject.event.failedevents.SagaPaymentFailedEvent;
+import com.myproject.event.failedevents.SagaTicketIssuedFailedEvent;
 import com.myproject.repository.BookingSagaRepository;
 import com.myproject.service.BookingSagaService;
 import com.myproject.utils.SagaTransitionPolicy;
@@ -10,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 import static com.myproject.enums.SagaStep.TICKET_ISSUED;
 
@@ -33,6 +37,9 @@ public class BookingSagaServiceImpl implements BookingSagaService {
 
         if(currentStep.equals(TICKET_ISSUED))
             bookingSaga.setStatus(SagaStatus.COMPLETED);
+
+        bookingSaga.setStatus(SagaStatus.COMPLETED);
+        bookingSaga.setCompletedAt(LocalDateTime.now());
     }
 
     @Override
@@ -41,7 +48,8 @@ public class BookingSagaServiceImpl implements BookingSagaService {
         var bookingId = sagaEvent.bookingId();
         var saga = bookingSagaRepository.findByBookingId(sagaEvent.bookingId());
         saga.setStatus(SagaStatus.COMPENSATING);
-
+        saga.setCompensationStartedAt(LocalDateTime.now());
+        saga.setFailureReason(extractFailureReason(sagaEvent));
 
         switch (saga.getCurrentStep()) {
 
@@ -75,7 +83,16 @@ public class BookingSagaServiceImpl implements BookingSagaService {
 
         }
 
-        saga.setStatus(SagaStatus.COMPENSATING);
+        saga.setStatus(SagaStatus.COMPENSATED);
+        saga.setCompensationCompletedA(LocalDateTime.now());
+    }
+
+    private String extractFailureReason(SagaEvent event){
+        if(event instanceof SagaTicketIssuedFailedEvent ex)
+            return ex.reason();
+        if(event instanceof SagaPaymentFailedEvent ex)
+            return ex.reason();
+        return "Unknown Failure";
     }
 
 }
