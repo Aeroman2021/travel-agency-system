@@ -1,5 +1,7 @@
-package com.myproject.event;
+package com.myproject.event.progressevents;
 
+
+import com.myproject.event.SagaProgressEvent;
 
 import java.math.BigDecimal;
 
@@ -9,5 +11,5 @@ public record SagaFlightReservedEvent(
         BigDecimal totalPrice,
         int passengerCount
 
-) implements SagaEvent{
+) implements SagaProgressEvent {
 }

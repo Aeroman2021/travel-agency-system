@@ -1,7 +1,8 @@
 package com.myproject.service.impl;
 
 import com.myproject.event.PassengerRegisteredEvent;
-import com.myproject.event.SagaPassengerRegisteredEvent;
+import com.myproject.event.progressevents.SagaPassengerRegisteredEvent;
+import com.myproject.event.compensationevents.CancelPassengerEvent;
 import com.myproject.model.dto.InputPassengers;
 import com.myproject.model.dto.response.PassengerResponseDto;
 import com.myproject.model.enums.PassengerStatus;
@@ -37,8 +38,6 @@ public class PassengerServiceImpl implements PassengerService {
                 .map(passengerMapper::toDto)
                 .toList();
 
-
-
         eventPublisher.publishEvent(
                 new PassengerRegisteredEvent(inputPassengers.getBookingId()));
 
@@ -49,11 +48,9 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    @Transactional
-    public void cancelPassengerByBookingId(Long bookingId) {
-        passengerRepository.findPassengersByBookingId(bookingId)
+    public void cancelPassenger(CancelPassengerEvent event) {
+        passengerRepository.findPassengersByBookingId(event.bookingId())
                 .forEach(e -> e.setPassengerStatus(PassengerStatus.CANCELLED));
-
     }
 
     @Override
@@ -63,6 +60,5 @@ public class PassengerServiceImpl implements PassengerService {
                 .map(passengerMapper::toDto)
                 .toList();
     }
-
 
 }

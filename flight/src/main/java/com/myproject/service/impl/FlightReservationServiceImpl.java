@@ -1,6 +1,8 @@
 package com.myproject.service.impl;
 
-import com.myproject.event.SagaFlightReservedEvent;
+import com.myproject.event.progressevents.SagaFlightReservedEvent;
+import com.myproject.event.compensationevents.CancelFlightReservationEvent;
+import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.response.FlightReservationResponseDto;
 import com.myproject.model.entity.FlightReservation;
 import com.myproject.model.enums.FlightReservationStatus;
@@ -73,5 +75,17 @@ public class FlightReservationServiceImpl implements FlightReservationService {
 
     private BigDecimal totalPriceCalculator(int passengerCount, BigDecimal flightPrice) {
         return flightPrice.multiply(BigDecimal.valueOf(passengerCount));
+    }
+
+    @Override
+    @Transactional
+    public void cancelFlightReservation(CancelFlightReservationEvent event) {
+        getById(event.bookingId()).setStatus(FlightReservationStatus.CANCELLED);
+    }
+
+    public FlightReservation getById(Long bookingId) {
+        return flightReservationRepository.findByBookingId(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
+                        .formatted("FlightReservation", bookingId)));
     }
 }

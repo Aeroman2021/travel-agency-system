@@ -3,9 +3,12 @@ package com.myproject.service.impl;
 import com.myproject.TicketIssueResult;
 import com.myproject.application.PassengerFacade;
 import com.myproject.event.PaymentSucceededEvent;
-import com.myproject.event.SagaTicketSuccessfullyIssuedEvent;
+import com.myproject.event.progressevents.SagaTicketSuccessfullyIssuedEvent;
 import com.myproject.event.TicketSuccessfullyIssuedEvent;
+import com.myproject.event.compensationevents.RevokeTicketEvent;
+import com.myproject.event.failedevents.SagaTicketIssuedFailedEvent;
 import com.myproject.exception.ResourceNotFoundException;
+import com.myproject.exception.TicketIssuingException;
 import com.myproject.model.dto.FlightReservationDto;
 import com.myproject.model.dto.response.TicketResponseDto;
 import com.myproject.model.entity.Ticket;
@@ -35,21 +38,28 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketResponseDto> issueTicket(PaymentSucceededEvent paymentSucceededEvent) {
 
         var bookingId = paymentSucceededEvent.bookingId();
-        List<TicketResponseDto> ticketResponseDtoList = passengerFacade
-                .getPassengerByBookId(bookingId)
-                .stream()
-                .map(e -> {
-                    Ticket ticket = new Ticket();
-                    ticket.setBookingId(e.getBookingId());
-                    ticket.setPassengerId(e.getId());
-                    ticket.setTicketNumber(generateTicketNumber());
-                    Ticket savedTicket = ticketRepository.save(ticket);
-                    return tickerMapper.toDto(savedTicket);
-                }).toList();
 
-        eventPublisher.publishEvent(generateTicketIssuedEvent(ticketResponseDtoList,bookingId));
-        eventPublisher.publishEvent(generateSagaTicketIssuedEvent(ticketResponseDtoList,bookingId));
-        return ticketResponseDtoList;
+        try{
+            List<TicketResponseDto> ticketResponseDtoList = passengerFacade
+                    .getPassengerByBookId(bookingId)
+                    .stream()
+                    .map(e -> {
+                        Ticket ticket = new Ticket();
+                        ticket.setBookingId(e.getBookingId());
+                        ticket.setPassengerId(e.getId());
+                        ticket.setTicketNumber(generateTicketNumber());
+                        Ticket savedTicket = ticketRepository.save(ticket);
+                        return tickerMapper.toDto(savedTicket);
+                    }).toList();
+
+            eventPublisher.publishEvent(generateTicketIssuedEvent(ticketResponseDtoList,bookingId));
+            eventPublisher.publishEvent(generateSagaTicketIssuedEvent(ticketResponseDtoList,bookingId));
+            return ticketResponseDtoList;
+        }catch (TicketIssuingException ex){
+            eventPublisher.publishEvent(new SagaTicketIssuedFailedEvent(bookingId,ex.getMessage()));
+            throw ex;
+        }
+
     }
 
     private TicketSuccessfullyIssuedEvent generateTicketIssuedEvent(
@@ -73,20 +83,6 @@ public class TicketServiceImpl implements TicketService {
         return new SagaTicketSuccessfullyIssuedEvent(ticketIssueResults,bookingId);
     }
 
-
-    @Override
-    @Transactional
-    public void cancelTicketByBookingId(Long bookingId) {
-        var ticket =  getTicketByBookingId(bookingId);
-        ticket.setTicketStatus(TicketStatus.CANCELLED);
-    }
-
-    private Ticket getTicketByBookingId(Long bookingId) {
-        return ticketRepository.findTicketByBookingId(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("%s with bookingId %d not found"
-                        .formatted("Ticket", bookingId)));
-    }
-
     private String generateTicketNumber() {
         return UUID
                 .randomUUID()
@@ -94,6 +90,19 @@ public class TicketServiceImpl implements TicketService {
                 .replace("-", "")
                 .substring(6)
                 .toUpperCase();
+    }
+
+    @Override
+    @Transactional
+    public void cancelTicketByBookingId(RevokeTicketEvent event) {
+        var ticket = getTicketByBookingId(event.bookingId());
+        ticket.setTicketStatus(TicketStatus.CANCELLED);
+    }
+
+    private Ticket getTicketByBookingId(Long bookingId) {
+        return ticketRepository.findTicketByBookingId(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with bookingId %d not found"
+                        .formatted("Ticket", bookingId)));
     }
 
 }
