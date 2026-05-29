@@ -36,4 +36,12 @@ public class BookingSaga {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    private String failureReason;
+
+    private LocalDateTime completedAt;
+
+    private LocalDateTime compensationStartedAt;
+
+    private LocalDateTime compensationCompletedA;
+
     }
