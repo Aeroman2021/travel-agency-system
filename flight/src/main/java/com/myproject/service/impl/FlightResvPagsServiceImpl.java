@@ -1,5 +1,6 @@
 package com.myproject.service.impl;
 
+import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.response.FlightResvPasgsResponseDto;
 import com.myproject.model.entity.FlightReservationPassenger;
 import com.myproject.event.TicketSuccessfullyIssuedEvent;
@@ -42,7 +43,10 @@ public class FlightResvPagsServiceImpl implements FlightResvPsgrsService {
 
     private Long getFlightReservationId(TicketSuccessfullyIssuedEvent event) {
         var bookingId = event.flightReservationDtoList().getFirst().getBookingId();
-        return flightReservationRepository.findByBookingId(bookingId).getId();
+         var flightReservation =   flightReservationRepository.findByBookingId(bookingId)
+                 .orElseThrow(() -> new ResourceNotFoundException("%s with bookingId %d not found"
+                .formatted("Flight Reservation", bookingId)));
+         return flightReservation.getId();
     }
 
     private String generateSeatNumber() {
