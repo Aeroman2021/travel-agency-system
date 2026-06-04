@@ -1,0 +1,53 @@
+<div class="layout">
+  <aside class="sidebar">
+
+    <div class="logo">
+      <h2>Travel Agency</h2>
+    </div>
+
+    <nav class="menu">
+
+      <a routerLink="/dashboard"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        Dashboard
+      </a>
+
+      <a routerLink="/booking" routerLinkActive="active">
+        Booking
+      </a>
+
+      <a routerLink="/passengers" routerLinkActive="active">
+        Passengers
+      </a>
+
+    </nav>
+
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+
+      <div class="topbar-left">
+        <span class="app-title">Travel Agency System</span>
+      </div>
+
+      <div class="topbar-right">
+
+        <div class="user-info">
+          <span class="username">Mohsen</span>
+        </div>
+
+        <button class="logout-btn">
+          Logout
+        </button>
+
+      </div>
+
+    </header>
+    <section class="page-content">
+      <router-outlet></router-outlet>
+    </section>
+
+  </main>
+</div>

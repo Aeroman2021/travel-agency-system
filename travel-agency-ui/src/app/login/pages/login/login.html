@@ -1,0 +1,50 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="login-header">
+
+      <h1>Travel Agency</h1>
+
+    </div>
+
+    <div class="login-form">
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Username</mat-label>
+
+        <input
+          matInput
+          [(ngModel)]="username"
+          type="text">
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+
+        <mat-label>Password</mat-label>
+
+        <input
+          matInput
+          [(ngModel)]="password"
+          type="password">
+
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="login-button"
+        (click)="onLogin()">
+
+        Login
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+```
