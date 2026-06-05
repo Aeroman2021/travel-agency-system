@@ -30,6 +30,7 @@
         <module>passanger</module>
         <module>saga</module>
         <module>saga-contract</module>
+        <module>auth</module>
     </modules>
 
     <repositories>

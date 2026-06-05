@@ -5,6 +5,7 @@ import {Passengers} from './pages/passengers/passengers';
 import {Booking} from './pages/booking/booking';
 import {Login} from './login/pages/login/login';
 import {MainBar} from './layout/components/main-bar/main-bar';
+import {authGuard} from './core/guard/auth-guard';
 
 export const routes: Routes = [
 
@@ -19,7 +20,7 @@ export const routes: Routes = [
     children:[
       {path: 'dashboard', component: Dashboard},
       {path: 'passenger', component: Passengers},
-      {path: 'booking', component: Booking},
+      {path: 'booking', component: Booking,canActivate:[authGuard]},
       {path: '', redirectTo: 'dashboard',pathMatch: 'full'}
     ]
   }
