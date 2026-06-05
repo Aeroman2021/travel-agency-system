@@ -51,8 +51,6 @@ public class FlightServiceImpl implements FlightService {
         }catch (ObjectOptimisticLockingFailureException e){
             throw new SeatAlreadyReservedException("This seat has bean already reserved.");
         }
-
     }
-
 
 }
