@@ -1,33 +1,46 @@
-import { Component } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import {Component} from '@angular/core';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {CommonModule} from '@angular/common';
+import {BookingService} from '../../core/services/booking-service';
+import {Flight} from '../../core/model/Flight';
+
 
 @Component({
   selector: 'app-booking',
-  imports: [MatTableModule,MatInputModule,MatFormFieldModule,FormsModule],
+  imports: [MatTableModule, CommonModule],
   templateUrl: './booking.html',
   styleUrl: './booking.scss',
 })
 export class Booking {
-  searchText ='';
 
-  displayedColumn :string[] = [
-    'id','passenger','destination','status'
+  constructor(private bookingService: BookingService) {
+  }
+
+  displayedColumns: string[] = [
+    'flightNumber',
+    'airLine',
+    'originAirport',
+    'destinationAirport',
+    'departureTime',
+    'arrivalTime',
+    'price',
+    'availableSeats',
+    'status'
   ];
 
-  dataSource =[
-    {
-      id:1,
-      passenger: 'Mohsen Malakouti',
-      destination: 'NewYork',
-      status: 'PAID'
-    },{
-      id:2,
-      passenger: 'Ehteram Darvishi',
-      destination: 'NewYork',
-      status: 'PAID'
-    }
-  ]
+  dataSource = new MatTableDataSource<Flight>();
+
+  ngOnInit(): void {
+    this.bookingService.getFlight()
+      .subscribe({
+        next: (data) => {
+          this.dataSource.data = data.content;
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      })
+  }
+
 }
+

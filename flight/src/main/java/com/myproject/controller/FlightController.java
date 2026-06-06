@@ -20,8 +20,8 @@ public class FlightController {
     private final FlightService flightService;
 
     @GetMapping
-    public ResponseEntity<Page<FlightResponseDto>> getAll(@RequestParam String pageNumber,
-                                                          @RequestParam String pageSize){
+    public ResponseEntity<Page<FlightResponseDto>> getAll(@RequestParam (defaultValue = "0")String pageNumber,
+                                                          @RequestParam(defaultValue = "10") String pageSize){
         var flights = flightService.getAll(pageNumber,pageSize);
         return new ResponseEntity<>(flights, HttpStatus.ACCEPTED);
     }
