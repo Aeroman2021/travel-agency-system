@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
-import {Auth} from '../../../core/services/auth';
+import {Auth} from '../../core/services/authentication/auth';
 import {Router} from '@angular/router';
 
 @Component({
@@ -23,16 +23,15 @@ export class Login {
   ) {
   }
 
-
   onLogin(){
     this.auth
       .login(this.username,this.password)
       .subscribe({
-        next : (response)=>{
+        next : (response:any)=>{
           localStorage.setItem('access_token', response.access_token);
           this.router.navigate(['/booking'])
         },
-        error : (err)=>{
+        error : (err:any)=>{
           console.error(err);
         }
       })
