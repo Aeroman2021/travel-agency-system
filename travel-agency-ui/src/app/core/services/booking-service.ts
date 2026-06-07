@@ -8,7 +8,7 @@ import {Flight} from '../model/Flight'
 })
 export class BookingService {
 
-    private apiUrl = 'http://localhost:6060/api/flights';
+    private apiUrl = 'http://localhost:6060/api/flight-view';
 
     constructor(private http:HttpClient) {}
 

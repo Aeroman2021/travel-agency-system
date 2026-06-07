@@ -14,24 +14,24 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="airLine">
+    <ng-container matColumnDef="airlineName">
       <th mat-header-cell *matHeaderCellDef>Airline</th>
       <td mat-cell *matCellDef="let flight">
-        {{ flight.airLine }}
+        {{ flight.airlineName }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="originAirport">
-      <th mat-header-cell *matHeaderCellDef>Origin</th>
+    <ng-container matColumnDef="originAirportDisplay">
+      <th mat-header-cell *matHeaderCellDef>Origin Airport</th>
       <td mat-cell *matCellDef="let flight">
-        {{ flight.originAirport }}
+        {{ flight.originAirportDisplay }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="destinationAirport">
-      <th mat-header-cell *matHeaderCellDef>Destination</th>
+    <ng-container matColumnDef="destAirportDisplay">
+      <th mat-header-cell *matHeaderCellDef>Destination Airport</th>
       <td mat-cell *matCellDef="let flight">
-        {{ flight.destinationAirport }}
+        {{ flight.destAirportDisplay }}
       </td>
     </ng-container>
 
