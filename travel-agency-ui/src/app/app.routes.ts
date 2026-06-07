@@ -1,12 +1,12 @@
 import {Routes} from '@angular/router';
-
-import {Dashboard} from './pages/dashboard/dashboard';
-import {Passengers} from './pages/passengers/passengers';
-import {Booking} from './pages/booking/booking';
-import {Login} from './pages/login-page/login';
 import {MainBar} from './layout/components/main-bar/main-bar';
 import {authGuard} from './core/guard/auth-guard';
-import {Register} from './pages/reg/register';
+import {Login} from './core/login-page/login';
+import {Register} from './core/reg/register';
+import {Dashboard} from './features/dashboard/dashboard';
+import {Passengers} from './features/passengers/passengers';
+import {Booking} from './features/book/booking';
+
 
 export const routes: Routes = [
 
@@ -23,5 +23,4 @@ export const routes: Routes = [
       {path: '', redirectTo: 'dashboard',pathMatch: 'full'}
     ]
   }
-
 ];

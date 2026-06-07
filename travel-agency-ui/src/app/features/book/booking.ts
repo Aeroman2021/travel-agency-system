@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {CommonModule} from '@angular/common';
-import {BookingService} from '../../core/services/booking-service';
 import {Flight} from '../../core/model/Flight';
+import {BookingService} from './services/booking-service';
 
 
 @Component({
