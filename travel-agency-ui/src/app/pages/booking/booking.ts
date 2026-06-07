@@ -18,9 +18,9 @@ export class Booking {
 
   displayedColumns: string[] = [
     'flightNumber',
-    'airLine',
-    'originAirport',
-    'destinationAirport',
+    'airlineName',
+    'originAirportDisplay',
+    'destAirportDisplay',
     'departureTime',
     'arrivalTime',
     'price',
