@@ -1,14 +1,12 @@
 package com.myproject.model.dto.request;
 
-import lombok.*;
+import com.myproject.model.enums.CabinClass;
 
-import java.math.BigDecimal;
-
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor
-public class BookingRequestDto {
-    Long userId;
-    Long flightId;
-    int numberOfPassengers;
-    String currencyCode;
+public record BookingRequestDto(
+        Long userId,
+        Long flightId,
+        CabinClass cabinClass,
+        int numberOfPassengers,
+        String currencyCode
+) {
 }

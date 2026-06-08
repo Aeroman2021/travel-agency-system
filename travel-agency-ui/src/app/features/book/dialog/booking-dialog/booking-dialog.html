@@ -1,0 +1,77 @@
+
+<h2 mat-dialog-title>
+  Flight Booking
+</h2>
+
+<mat-dialog-content>
+
+  <div class="flight-summary">
+
+    <p>
+      <strong>Flight:</strong>
+      {{ flight.flightNumber }}
+    </p>
+
+    <p>
+      <strong>Route:</strong>
+      {{ flight.originAirportDisplay }}
+      →
+      {{ flight.destAirportDisplay }}
+    </p>
+
+  </div>
+
+  <mat-form-field appearance="outline" class="full-width">
+
+    <mat-label>Passengers</mat-label>
+
+    <input
+      matInput
+      type="number"
+      min="1"
+      [(ngModel)]="passengerCount"
+    />
+
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+
+    <mat-label>Cabin Class</mat-label>
+
+    <mat-select [(ngModel)]="cabinClass">
+
+      <mat-option value="ECONOMY">
+        Economy
+      </mat-option>
+
+      <mat-option value="BUSINESS">
+        Business
+      </mat-option>
+
+      <mat-option value="FIRST">
+        First Class
+      </mat-option>
+
+    </mat-select>
+
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button mat-button (click)="close()">
+    Cancel
+  </button>
+
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="continueBooking()"
+  >
+    Continue
+  </button>
+
+</mat-dialog-actions>
+
+

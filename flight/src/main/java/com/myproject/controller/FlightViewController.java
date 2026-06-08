@@ -1,5 +1,6 @@
 package com.myproject.controller;
 
+import com.myproject.model.dto.response.FlightViewDto;
 import com.myproject.model.view.FlightView;
 import com.myproject.service.FlightViewService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class FlightViewController {
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Page<FlightView>> loadAll(
+    public ResponseEntity<Page<FlightViewDto>> loadAll(
             @RequestParam(defaultValue = "0") String pageNumber,
             @RequestParam(defaultValue = "20") String pageSize
     ){

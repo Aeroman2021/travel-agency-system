@@ -1,6 +1,6 @@
 package com.myproject.service.impl;
 
-import com.myproject.application.flightfacade.FlightFacade;
+import com.myproject.application.flightcabinfacade.FlightCabinFacade;
 import com.myproject.event.BookingInitiatedEvent;
 import com.myproject.event.progressevents.SagaBookingInitiatedEvent;
 import com.myproject.event.compensationevents.CancelBookingEvent;
@@ -24,7 +24,7 @@ public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
-    private final FlightFacade flightFacade;
+    private final FlightCabinFacade flightCabinFacade;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
@@ -33,19 +33,27 @@ public class BookingServiceImpl implements BookingService {
 
         var booking = bookingMapper.toEntity(dto);
 
-        var totalPrice = flightFacade.calculateTotalPrice(dto.getFlightId(),
-                dto.getNumberOfPassengers());
-
+        var totalPrice = flightCabinFacade.calculateTotalPrice(
+                dto.flightId(),
+                dto.cabinClass(),
+                dto.numberOfPassengers()
+        );
         booking.setTotalPrice(totalPrice);
-        booking.setBookingStatus(BookingStatus.INITIATED);
 
+        var flightCabin = flightCabinFacade.findByFlightIdAndCabinClass(dto.flightId(),dto.cabinClass());
+        booking.setFlightCabinId(flightCabin.getId());
+
+        booking.setBookingStatus(BookingStatus.INITIATED);
         var savedBooking = bookingRepository.save(booking);
 
-        eventPublisher.publishEvent(new BookingInitiatedEvent(savedBooking.getId(),
+        eventPublisher.publishEvent(new BookingInitiatedEvent(
+                savedBooking.getId(),
                 savedBooking.getFlightId(),
+                savedBooking.getFlightCabinId(),
                 savedBooking.getNumberOfPassengers()));
 
-        eventPublisher.publishEvent(new SagaBookingInitiatedEvent(savedBooking.getId(),
+        eventPublisher.publishEvent(new SagaBookingInitiatedEvent(
+                savedBooking.getId(),
                 savedBooking.getFlightId(),
                 savedBooking.getNumberOfPassengers()));
 
@@ -64,8 +72,5 @@ public class BookingServiceImpl implements BookingService {
                         .formatted("Booking", bookingId)));
 
     }
-
-
-
 
 }
