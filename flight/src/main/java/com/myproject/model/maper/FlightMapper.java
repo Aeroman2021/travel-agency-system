@@ -14,9 +14,6 @@ public class FlightMapper {
                 .destinationAirport(flight.getDestinationAirport().getId())
                 .departureTime(flight.getDepartureTime())
                 .arrivalTime(flight.getArrivalTime())
-                .price(flight.getPrice())
-                .currencyCode(flight.getCurrencyCode())
-                .availableSeats(flight.getAvailableSeats())
                 .status(flight.getStatus())
                 .build();
     }

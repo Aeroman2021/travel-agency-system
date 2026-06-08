@@ -1,6 +1,12 @@
 package com.myproject.event;
 
 
-public record BookingInitiatedEvent(Long bookingId, Long flightId, int passengerCount
-) {
+import com.myproject.model.enums.CabinClass;
+
+public record BookingInitiatedEvent(
+        Long bookingId,
+        Long flightId,
+        CabinClass cabinClass,
+        int passengerCount
+){
 }

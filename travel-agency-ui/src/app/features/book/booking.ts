@@ -3,6 +3,9 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {CommonModule} from '@angular/common';
 import {Flight} from '../../core/model/Flight';
 import {BookingService} from './services/booking-service';
+import { MatDialog } from '@angular/material/dialog';
+import { BookingDialog } from '../book/dialog/booking-dialog/booking-dialog';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -13,7 +16,7 @@ import {BookingService} from './services/booking-service';
 })
 export class Booking {
 
-  constructor(private bookingService: BookingService) {
+  constructor(private bookingService: BookingService,private dialog:MatDialog,private router: Router) {
   }
 
   displayedColumns: string[] = [
@@ -23,8 +26,9 @@ export class Booking {
     'destAirportDisplay',
     'departureTime',
     'arrivalTime',
-    'price',
-    'availableSeats',
+    'startingPrice',
+    'totalAvailableSeats',
+    'availableCabins',
     'status'
   ];
 
@@ -41,6 +45,40 @@ export class Booking {
         }
       })
   }
+
+
+openBookingDialog(flight: any) {
+
+  const dialogRef = this.dialog.open(
+    BookingDialog,
+    {
+      width: '500px',
+      data: flight
+    }
+  );
+
+  dialogRef.afterClosed().subscribe(result => {
+
+    if(result){
+
+      this.router.navigate(
+        ['/passengers'],
+        {
+          state: {
+            bookingData: result
+          }
+        }
+      );
+
+    }
+
+  });
+
+}
+
+
+
+
 
 }
 

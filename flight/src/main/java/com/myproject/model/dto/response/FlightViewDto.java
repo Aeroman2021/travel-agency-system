@@ -1,7 +1,7 @@
-package com.myproject.model.view;
+package com.myproject.model.dto.response;
 
+import com.myproject.model.enums.CabinClass;
 import com.myproject.model.enums.FlightStatus;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,16 +9,12 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "vw_flights")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class FlightView {
 
-    @Id
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class FlightViewDto{
     private Long id;
 
     private String airlineName;
@@ -33,20 +29,14 @@ public class FlightView {
 
     private LocalDateTime arrivalTime;
 
-    @Column(name = "starting_price")
     private BigDecimal startingPrice;
 
-    @Column(name = "currency_code")
     private String currencyCode;
 
-    @Column(name = "total_available_seats")
     private Long totalAvailableSeats;
 
-    @Column(name = "available_cabins")
-    private String availableCabins;
+    private List<CabinClass> availableCabins;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
     private FlightStatus status;
-
 }
+

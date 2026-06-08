@@ -10,6 +10,7 @@ import com.myproject.event.BookingInitiatedEvent;
 import com.myproject.event.FlightReservedEvent;
 import com.myproject.model.maper.FlightReservationMapper;
 import com.myproject.repository.FlightReservationRepository;
+import com.myproject.service.FlightCabinService;
 import com.myproject.service.FlightReservationService;
 import com.myproject.service.FlightService;
 import jakarta.transaction.Transactional;
@@ -27,13 +28,14 @@ public class FlightReservationServiceImpl implements FlightReservationService {
 
     private final FlightReservationRepository flightReservationRepository;
     private final FlightService flightservice;
+    private final FlightCabinService flightCabinService;
     private final FlightReservationMapper flightReservationMapper;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
     public FlightReservationResponseDto reserveFlight(BookingInitiatedEvent event) {
-        flightservice.reservedSeats(event.flightId(), event.passengerCount());
+        flightCabinService.reservedSeats(event.flightId(), event.passengerCount(), event.cabinClass());
         var flightReservation = flightReservationCreator(event);
         var savedFlightReservation = flightReservationRepository.save(flightReservation);
 
@@ -49,7 +51,6 @@ public class FlightReservationServiceImpl implements FlightReservationService {
                 savedFlightReservation.getPrice(),
                 event.passengerCount()));
 
-
         return flightReservationMapper.toDto(savedFlightReservation);
     }
 
@@ -63,7 +64,7 @@ public class FlightReservationServiceImpl implements FlightReservationService {
         flightReservation.setDepartureTime(flight.departureTime());
         flightReservation.setArrivalTime(flight.arrivalTime());
         flightReservation.setStatus(FlightReservationStatus.RESERVED);
-        flightReservation.setPrice(totalPriceCalculator(event.passengerCount(), flight.price()));
+        flightReservation.setPrice(totalPriceCalculator(event));
         flightReservation.setPnr(createPnr());
 
         return flightReservation;
@@ -73,8 +74,8 @@ public class FlightReservationServiceImpl implements FlightReservationService {
         return UUID.randomUUID().toString().replace("-","").substring(0, 8).toUpperCase();
     }
 
-    private BigDecimal totalPriceCalculator(int passengerCount, BigDecimal flightPrice) {
-        return flightPrice.multiply(BigDecimal.valueOf(passengerCount));
+    private BigDecimal totalPriceCalculator(BookingInitiatedEvent event) {
+        return flightCabinService.calculateTotalPrice(event.flightId(), event.cabinClass(), event.passengerCount());
     }
 
     @Override

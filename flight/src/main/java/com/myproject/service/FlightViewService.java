@@ -1,10 +1,9 @@
 package com.myproject.service;
 
-import com.myproject.model.dto.response.FlightResponseDto;
-import com.myproject.model.view.FlightView;
+import com.myproject.model.dto.response.FlightViewDto;
 import org.springframework.data.domain.Page;
 
 public interface FlightViewService {
-    Page<FlightView> getAll(String pageNumber, String pageSize);
+    Page<FlightViewDto> getAll(String pageNumber, String pageSize);
 
 }

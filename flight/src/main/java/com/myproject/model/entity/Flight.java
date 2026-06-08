@@ -31,7 +31,6 @@ public class Flight {
     @JoinColumn(name = "origin_airport_id")
     private Airport originAirport;
 
-
     @ManyToOne
     @JoinColumn(name = "destination_airport_id")
     private Airport destinationAirport;
@@ -39,12 +38,6 @@ public class Flight {
     private LocalDateTime departureTime;
 
     private LocalDateTime arrivalTime;
-
-    private BigDecimal price;
-
-    private String currencyCode;
-
-    private int availableSeats;
 
     @Enumerated(EnumType.STRING)
     private FlightStatus status;
