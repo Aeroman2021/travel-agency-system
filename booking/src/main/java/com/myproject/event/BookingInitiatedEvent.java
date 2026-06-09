@@ -1,6 +1,10 @@
 package com.myproject.event;
 
 
-public record BookingInitiatedEvent(Long bookingId,Long flightId,Long flightCabin, int passengerCount
+public record BookingInitiatedEvent(
+        Long bookingId,
+        Long flightId,
+        Long flightCabinId,
+        int passengerCount
 ){
 }

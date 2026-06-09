@@ -11,8 +11,6 @@ public class PassengerRequestDto {
 
     private Long bookingId;
 
-    private Long userId;
-
     private String fullName;
 
     private String ncode;

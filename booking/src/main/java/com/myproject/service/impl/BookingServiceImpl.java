@@ -1,9 +1,10 @@
 package com.myproject.service.impl;
 
+import com.myproject.application.AuthFacade;
 import com.myproject.application.flightcabinfacade.FlightCabinFacade;
 import com.myproject.event.BookingInitiatedEvent;
-import com.myproject.event.progressevents.SagaBookingInitiatedEvent;
 import com.myproject.event.compensationevents.CancelBookingEvent;
+import com.myproject.event.progressevents.SagaBookingInitiatedEvent;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.request.BookingRequestDto;
 import com.myproject.model.dto.response.BookingResponseDto;
@@ -26,6 +27,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingMapper bookingMapper;
     private final FlightCabinFacade flightCabinFacade;
     private final ApplicationEventPublisher eventPublisher;
+    private final AuthFacade authFacade;
 
     @Override
     @Transactional
@@ -43,7 +45,10 @@ public class BookingServiceImpl implements BookingService {
         var flightCabin = flightCabinFacade.findByFlightIdAndCabinClass(dto.flightId(),dto.cabinClass());
         booking.setFlightCabinId(flightCabin.getId());
 
+        booking.setCurrentUserId(authFacade.getCurrentUser());
+
         booking.setBookingStatus(BookingStatus.INITIATED);
+        booking.setCurrencyCode("EU");
         var savedBooking = bookingRepository.save(booking);
 
         eventPublisher.publishEvent(new BookingInitiatedEvent(

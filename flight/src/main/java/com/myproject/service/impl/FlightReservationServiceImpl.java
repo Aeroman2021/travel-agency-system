@@ -1,13 +1,13 @@
 package com.myproject.service.impl;
 
-import com.myproject.event.progressevents.SagaFlightReservedEvent;
+import com.myproject.event.BookingInitiatedEvent;
+import com.myproject.event.FlightReservedEvent;
 import com.myproject.event.compensationevents.CancelFlightReservationEvent;
+import com.myproject.event.progressevents.SagaFlightReservedEvent;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.response.FlightReservationResponseDto;
 import com.myproject.model.entity.FlightReservation;
 import com.myproject.model.enums.FlightReservationStatus;
-import com.myproject.event.BookingInitiatedEvent;
-import com.myproject.event.FlightReservedEvent;
 import com.myproject.model.maper.FlightReservationMapper;
 import com.myproject.repository.FlightReservationRepository;
 import com.myproject.service.FlightCabinService;
@@ -35,7 +35,7 @@ public class FlightReservationServiceImpl implements FlightReservationService {
     @Override
     @Transactional
     public FlightReservationResponseDto reserveFlight(BookingInitiatedEvent event) {
-        flightCabinService.reservedSeats(event.flightId(), event.passengerCount(), event.cabinClass());
+        flightCabinService.reservedSeats(event.flightCabinId(), event.passengerCount());
         var flightReservation = flightReservationCreator(event);
         var savedFlightReservation = flightReservationRepository.save(flightReservation);
 
@@ -71,11 +71,12 @@ public class FlightReservationServiceImpl implements FlightReservationService {
     }
 
     private String createPnr() {
-        return UUID.randomUUID().toString().replace("-","").substring(0, 8).toUpperCase();
+        return UUID.randomUUID().toString().replace("-","")
+                .substring(0, 8).toUpperCase();
     }
 
     private BigDecimal totalPriceCalculator(BookingInitiatedEvent event) {
-        return flightCabinService.calculateTotalPrice(event.flightId(), event.cabinClass(), event.passengerCount());
+        return flightCabinService.calculateTotalPrice(event.flightCabinId(), event.passengerCount());
     }
 
     @Override
