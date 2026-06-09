@@ -4,7 +4,10 @@ import com.myproject.dto.LoginRequestDto;
 import com.myproject.dto.RegisterRequestDto;
 import com.myproject.dto.TokecnResponse;
 import com.myproject.service.AuthService;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -69,6 +72,13 @@ public class AuthServiceImpl implements AuthService {
                 .body(user)
                 .retrieve()
                 .toBodilessEntity();
+    }
+
+    @Override
+    public String getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+
     }
 
     private String getAdminToken() {

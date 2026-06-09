@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './booking-dialog.scss',
 })
 export class BookingDialog {
-  passengerCount=1;
+  numberOfPassengers=1;
   cabinClass='ECONOMY';
 
   constructor(@Inject(MAT_DIALOG_DATA) public flight:any,private dialogRef :MatDialogRef<BookingDialog>){
@@ -23,16 +23,13 @@ export class BookingDialog {
   continueBooking(){
     this.dialogRef.close({
       flightId:this.flight.id,
-      passengerCount:this.passengerCount,
-      cabinClass:this.cabinClass
+      numberOfPassengers: this.numberOfPassengers,
+      cabinClass: this.cabinClass
     })
   }
 
   close(){
     this.dialogRef.close();
   }
-
-
-
 
 }

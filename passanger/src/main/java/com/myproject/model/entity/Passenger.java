@@ -20,8 +20,6 @@ public class Passenger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-
     private Long bookingId;
 
     @Column(name = "full_name")

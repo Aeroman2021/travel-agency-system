@@ -13,8 +13,6 @@ public class PassengerResponseDto {
 
     private Long id;
 
-    private Long userId;
-
     private Long bookingId;
 
     private String fullName;

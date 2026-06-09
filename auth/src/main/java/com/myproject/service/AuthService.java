@@ -7,6 +7,8 @@ import com.myproject.dto.TokecnResponse;
 public interface AuthService {
     TokecnResponse login(LoginRequestDto request);
     void register(RegisterRequestDto requestDto);
+    String getCurrentUser();
+
 
 
 }

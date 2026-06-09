@@ -6,7 +6,7 @@ import com.myproject.model.enums.CabinClass;
 public record BookingInitiatedEvent(
         Long bookingId,
         Long flightId,
-        CabinClass cabinClass,
+        Long flightCabinId,
         int passengerCount
 ){
 }

@@ -25,12 +25,7 @@
 
     <mat-label>Passengers</mat-label>
 
-    <input
-      matInput
-      type="number"
-      min="1"
-      [(ngModel)]="passengerCount"
-    />
+    <input matInput type="number" min="1" [(ngModel)]="numberOfPassengers"/>
 
   </mat-form-field>
 
@@ -40,17 +35,11 @@
 
     <mat-select [(ngModel)]="cabinClass">
 
-      <mat-option value="ECONOMY">
-        Economy
-      </mat-option>
+      <mat-option value="ECONOMY">Economy</mat-option>
 
-      <mat-option value="BUSINESS">
-        Business
-      </mat-option>
+      <mat-option value="BUSINESS">Business</mat-option>
 
-      <mat-option value="FIRST">
-        First Class
-      </mat-option>
+      <mat-option value="FIRST">First Class</mat-option>
 
     </mat-select>
 

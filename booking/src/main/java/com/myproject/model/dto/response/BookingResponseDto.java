@@ -12,9 +12,11 @@ public class BookingResponseDto {
 
     Long id;
 
-    Long userId;
+    private String currentUserId;;
 
     Long flightId ;
+
+    private Long flightCabinId;
 
     int numberOfPassengers;
 

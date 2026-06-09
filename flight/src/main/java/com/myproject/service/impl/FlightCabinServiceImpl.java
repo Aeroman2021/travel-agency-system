@@ -3,13 +3,10 @@ package com.myproject.service.impl;
 import com.myproject.exception.NoAvailableSeatsException;
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.exception.SeatAlreadyReservedException;
-import com.myproject.model.dto.response.FlightCabinResponse;
 import com.myproject.model.entity.FlightCabin;
 import com.myproject.model.enums.CabinClass;
-import com.myproject.model.maper.FlightCabinMapper;
 import com.myproject.repository.FlightCabinRepository;
 import com.myproject.service.FlightCabinService;
-import com.myproject.service.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -20,16 +17,13 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class FlightCabinServiceImpl implements FlightCabinService {
 
-    private final FlightService flightService;
     private final FlightCabinRepository flightCabinRepository;
-    private final FlightCabinMapper flightCabinMapper;
 
     @Override
-    public FlightCabinResponse getById(Long id) {
-        FlightCabin flightCabin = flightCabinRepository.findById(id)
+    public FlightCabin getById(Long id) {
+        return flightCabinRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
                         .formatted("Flight cabin", id)));
-        return flightCabinMapper.toDto(flightCabin);
     }
 
     @Override
@@ -38,10 +32,10 @@ public class FlightCabinServiceImpl implements FlightCabinService {
     }
 
     @Override
-    public void reservedSeats(Long flightId, int passengerCount, CabinClass cabinClass) {
+    public void reservedSeats(Long flightCabinId, int passengerCount) {
         try {
-            var flight = flightService.getById(flightId);
-            var flightCabin = findByFlightIdAndCabinClass(flightId, cabinClass);
+
+            var flightCabin = getById(flightCabinId);
             if (flightCabin.getAvailableSeats() < passengerCount)
                 throw new NoAvailableSeatsException("There is not enough seat available");
             flightCabin.setAvailableSeats(flightCabin.getAvailableSeats() - passengerCount);
@@ -51,8 +45,9 @@ public class FlightCabinServiceImpl implements FlightCabinService {
     }
 
     @Override
-    public BigDecimal calculateTotalPrice(Long flightId, CabinClass cabinClass, int passengerCount) {
-        var flightCabin = findByFlightIdAndCabinClass(flightId, cabinClass);
+    public BigDecimal calculateTotalPrice(Long flightCabinId, int passengerCount) {
+        var flightCabin = getById(flightCabinId);
         return flightCabin.getPrice().multiply(new BigDecimal(passengerCount));
     }
+
 }
