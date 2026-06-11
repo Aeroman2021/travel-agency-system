@@ -12,7 +12,7 @@ public class BookingResponseDto {
 
     Long id;
 
-    private String currentUserId;;
+    private String currentUserId;
 
     Long flightId ;
 

@@ -16,8 +16,6 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-
-
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookingResponseDto> save(@RequestBody BookingRequestDto dto) {

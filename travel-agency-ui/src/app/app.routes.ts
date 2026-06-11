@@ -5,6 +5,7 @@ import {Login} from './core/login-page/login';
 import {Register} from './core/reg/register';
 import {Dashboard} from './features/dashboard/dashboard';
 import {Passengers} from './features/passengers/passengers';
+import {FlightList} from './features/flight-list/flight-list';
 import {Booking} from './features/book/booking';
 
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
     path:'',
     component:MainBar,
     children:[
+      {path: 'flights',component:FlightList},
       {path: 'dashboard', component: Dashboard},
       {path: 'passenger', component: Passengers},
       {path: 'booking', component: Booking,canActivate:[authGuard]},

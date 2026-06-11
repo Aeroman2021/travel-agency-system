@@ -6,7 +6,6 @@ import {BookingService} from './services/booking-service';
 import {MatDialog} from '@angular/material/dialog';
 import {BookingDialog} from '../book/dialog/booking-dialog/booking-dialog';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup} from '@angular/forms';
 
 
 @Component({
@@ -19,8 +18,7 @@ export class Booking {
 
   constructor(private bookingService: BookingService,
               private dialog: MatDialog,
-              private router: Router,
-              private fb: FormBuilder) {
+              private router: Router) {
   }
 
   displayedColumns: string[] = [

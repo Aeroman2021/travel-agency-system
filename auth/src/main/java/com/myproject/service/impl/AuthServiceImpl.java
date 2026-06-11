@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2Res
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -76,9 +78,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("AUTH CLASS = " + authentication.getClass());
+        System.out.println("AUTH = " + authentication);
+        Jwt jwt = ((JwtAuthenticationToken) authentication).getToken();
+        return jwt.getSubject();
     }
 
     private String getAdminToken() {

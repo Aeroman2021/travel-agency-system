@@ -7,4 +7,5 @@ import com.myproject.model.dto.response.BookingResponseDto;
 public interface BookingService {
     BookingResponseDto save(BookingRequestDto requestDto);
     void cancelBookingEvent(CancelBookingEvent event);
+
 }
