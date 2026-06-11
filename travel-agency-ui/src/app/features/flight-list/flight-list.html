@@ -1,0 +1,95 @@
+<div class="table-container" >
+
+  <div class="table-header">
+    <h2>Available Flights</h2>
+    <p>Select your preferred flight</p>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="flight-table">
+
+    <ng-container matColumnDef="flightNumber">
+      <th mat-header-cell *matHeaderCellDef>Flight Number</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.flightNumber }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="airlineName">
+      <th mat-header-cell *matHeaderCellDef>Airline</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.airlineName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="originAirportDisplay">
+      <th mat-header-cell *matHeaderCellDef>Origin Airport</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.originAirportDisplay }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="destAirportDisplay">
+      <th mat-header-cell *matHeaderCellDef>Destination Airport</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.destAirportDisplay }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="departureTime">
+      <th mat-header-cell *matHeaderCellDef>Departure Time</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.departureTime | date:'short' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="arrivalTime">
+      <th mat-header-cell *matHeaderCellDef>Arrival Time</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.arrivalTime | date: 'short' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="startingPrice">
+      <th mat-header-cell *matHeaderCellDef>Starting Price</th>
+      <td mat-cell *matCellDef="let flight">
+        EU{{ flight.startingPrice }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalAvailableSeats">
+      <th mat-header-cell *matHeaderCellDef>Available Seats</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.totalAvailableSeats}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="availableCabins">
+      <th mat-header-cell *matHeaderCellDef>Available Cabins</th>
+      <td mat-cell *matCellDef="let flight">
+        {{ flight.availableCabins}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+
+      <td mat-cell *matCellDef="let flight">
+    <span class="status-badge" [ngClass]="flight.status.toLowerCase()">
+      {{ flight.status }}
+    </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      class="flight-row"
+      (click)="selectFlight(row)">
+    </tr>
+
+  </table>
+
+</div>
+

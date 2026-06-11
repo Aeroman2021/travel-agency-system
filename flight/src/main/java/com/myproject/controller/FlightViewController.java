@@ -22,7 +22,6 @@ public class FlightViewController {
     private final FlightViewService flightViewService;
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Page<FlightViewDto>> loadAll(
             @RequestParam(defaultValue = "0") String pageNumber,
             @RequestParam(defaultValue = "20") String pageSize

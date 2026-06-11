@@ -2,18 +2,14 @@ package com.myproject.service.impl;
 
 import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.response.FlightResponseDto;
-import com.myproject.model.enums.CabinClass;
 import com.myproject.model.maper.FlightMapper;
 import com.myproject.repository.FlightRepository;
-import com.myproject.service.FlightCabinService;
 import com.myproject.service.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
