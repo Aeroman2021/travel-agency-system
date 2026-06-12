@@ -9,13 +9,13 @@ import {BookingPayload} from '../models/BookingPayload';
 })
 export class BookingService {
 
-    private apiUrl = 'http://localhost:6060/api/flight-view';
+    private myBookingApi = 'http://localhost:6060/api/booking-view/my-booking'
     private bookingApiUrl = 'http://localhost:6060/api/bookings';
 
     constructor(private http:HttpClient ) {}
 
-    getFlight():Observable<any>{
-      return this.http.get<any>(this.apiUrl);
+    getMyBookings():Observable<any>{
+      return this.http.get<any>(this.myBookingApi);
     }
 
     createBooking(bookingPayLoad:BookingPayload):Observable<any>{

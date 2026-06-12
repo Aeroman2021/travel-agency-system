@@ -1,5 +1,6 @@
 package com.myproject.controller;
 
+import com.myproject.application.AuthFacade;
 import com.myproject.model.entity.BookingView;
 import com.myproject.service.BookingViewService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +15,15 @@ import org.springframework.web.bind.annotation.*;
 public class BookingViewController {
 
     private final BookingViewService bookingViewService;
+    private final AuthFacade authFacade;
 
-    @GetMapping("{id}/booking-view")
+    @GetMapping("my-booking")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Page<BookingView>> getByUserId(@PathVariable("id")String userId,
-                                                         @RequestParam(defaultValue = "0")String pageNumber,
+    public ResponseEntity<Page<BookingView>> getByUserId(@RequestParam(defaultValue = "0")String pageNumber,
                                                          @RequestParam(defaultValue = "10") String pageSize){
-        var result = bookingViewService.findBookingViewByCurrentUserId(userId,pageNumber,pageSize);
+        var currentUserId = authFacade.getCurrentUser();
+        System.out.println(currentUserId);
+        var result = bookingViewService.findBookingViewByCurrentUserId(currentUserId,pageNumber,pageSize);
         return ResponseEntity.ok(result);
     }
 }
