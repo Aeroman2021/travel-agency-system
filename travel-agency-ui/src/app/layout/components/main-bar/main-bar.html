@@ -6,20 +6,24 @@
     </div>
 
     <nav class="menu">
+      <a routerLink="/flights" routerLinkActive="active">
+        FlightList
+      </a>
 
+      <a routerLink="/booking" routerLinkActive="active">
+        Booking
+      </a>
       <a routerLink="/dashboard"
          routerLinkActive="active"
          [routerLinkActiveOptions]="{ exact: true }">
         Dashboard
       </a>
 
-      <a routerLink="/booking" routerLinkActive="active">
-        Booking
-      </a>
 
       <a routerLink="/passengers" routerLinkActive="active">
         Passengers
       </a>
+
 
     </nav>
 

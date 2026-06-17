@@ -16,8 +16,7 @@ export class MainBar {
   username = '';
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    this.router.navigate(['/login']);
+    this.auth.logout()
   }
 
   ngOnInit(): void{

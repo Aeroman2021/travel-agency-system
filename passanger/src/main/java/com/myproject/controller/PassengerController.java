@@ -20,12 +20,12 @@ public class PassengerController {
 
     private final PassengerService passengerService;
 
-    @PostMapping("booking/{booking-id}/passengers")
+    @PostMapping("booking/{booking-id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<PassengerResponseDto>> save(
             @PathVariable("booking-id") Long bookingId,
             @RequestBody List<PassengerRequestDto> requestDtoList) {
-        var savedPassengers = passengerService.save(new InputPassengers(requestDtoList, bookingId));
+        var savedPassengers = passengerService.save(new InputPassengers(requestDtoList),bookingId);
         return new ResponseEntity<>(savedPassengers, HttpStatus.CREATED);
     }
 }

@@ -20,7 +20,7 @@ export const routes: Routes = [
     children:[
       {path: 'flights',component:FlightList},
       {path: 'dashboard', component: Dashboard},
-      {path: 'passenger', component: Passengers},
+      {path: 'passengers/:id', component: Passengers},
       {path: 'booking', component: Booking,canActivate:[authGuard]},
       {path: '', redirectTo: 'dashboard',pathMatch: 'full'}
     ]

@@ -1,13 +1,15 @@
 package com.myproject.service;
 
 import com.myproject.dto.LoginRequestDto;
+import com.myproject.dto.RefreshTokenDto;
 import com.myproject.dto.RegisterRequestDto;
-import com.myproject.dto.TokecnResponse;
+import com.myproject.dto.TokenResponse;
 
 public interface AuthService {
-    TokecnResponse login(LoginRequestDto request);
+    TokenResponse login(LoginRequestDto request);
     void register(RegisterRequestDto requestDto);
     String getCurrentUser();
+    TokenResponse refresh(RefreshTokenDto refreshTokenDto);
 
 
 

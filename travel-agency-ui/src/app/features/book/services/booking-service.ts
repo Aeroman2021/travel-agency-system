@@ -11,6 +11,7 @@ export class BookingService {
 
     private myBookingApi = 'http://localhost:6060/api/booking-view/my-booking'
     private bookingApiUrl = 'http://localhost:6060/api/bookings';
+    private bookingViewApiUrl = 'http://localhost:6060/api/booking-view';
 
     constructor(private http:HttpClient ) {}
 
@@ -20,6 +21,10 @@ export class BookingService {
 
     createBooking(bookingPayLoad:BookingPayload):Observable<any>{
       return this.http.post(this.bookingApiUrl,bookingPayLoad)
+    }
+
+    getBookingById(id:Number){
+      return this.http.get<any>(this.bookingViewApiUrl + '/' + id)
     }
 
 }

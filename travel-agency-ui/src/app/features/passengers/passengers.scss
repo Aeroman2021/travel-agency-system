@@ -1,0 +1,40 @@
+.passenger-card {
+
+  padding: 20px;
+  margin-bottom: 20px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+
+  background: white;
+}
+
+.passenger-card h3 {
+
+  margin-bottom: 20px;
+}
+
+.form-row {
+
+  display: flex;
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.form-row mat-form-field {
+  flex: 1 1 0;
+}
+
+mat-form-field {
+
+  flex: 1;
+}
+
+.actions {
+
+  margin-top: 24px;
+
+  display: flex;
+  justify-content: flex-end;
+}

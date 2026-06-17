@@ -26,4 +26,13 @@ public class BookingViewController {
         var result = bookingViewService.findBookingViewByCurrentUserId(currentUserId,pageNumber,pageSize);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<BookingView> getBookingById(@PathVariable Long id){
+        BookingView booking = bookingViewService.findBookingViewById(id);
+        return ResponseEntity.ok(booking);
+    }
+
+
 }

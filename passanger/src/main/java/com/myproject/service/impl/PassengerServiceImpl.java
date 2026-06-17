@@ -1,10 +1,13 @@
 package com.myproject.service.impl;
 
+import com.myproject.application.BookingFacade;
 import com.myproject.event.PassengerRegisteredEvent;
-import com.myproject.event.progressevents.SagaPassengerRegisteredEvent;
 import com.myproject.event.compensationevents.CancelPassengerEvent;
+import com.myproject.event.progressevents.SagaPassengerRegisteredEvent;
+import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.dto.InputPassengers;
 import com.myproject.model.dto.response.PassengerResponseDto;
+import com.myproject.model.entity.Passenger;
 import com.myproject.model.enums.PassengerStatus;
 import com.myproject.model.mapper.PassengerMapper;
 import com.myproject.repository.PassengerRepository;
@@ -22,29 +25,34 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
     private final PassengerMapper passengerMapper;
     private final ApplicationEventPublisher eventPublisher;
+    private final BookingFacade bookingFacade;
 
     @Override
     @Transactional
-    public List<PassengerResponseDto> save(InputPassengers inputPassengers) {
+    public List<PassengerResponseDto> save(InputPassengers inputPassengers, Long bookingId) {
 
-        List<PassengerResponseDto> passengerResponseDtos =
-                inputPassengers.getPassengerRequestDtoList()
+        bookingFacade.getById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
+                        .formatted("Booking", bookingId)));
+
+        List<Passenger> passengers = inputPassengers.getPassengerRequestDtoList()
                 .stream()
                 .map(dto -> {
                     var passenger = passengerMapper.toEntity(dto);
-                    passenger.setBookingId(inputPassengers.getBookingId());
-                    return passengerRepository.save(passenger);
+                    passenger.setBookingId(bookingId);
+                    return passenger;
                 })
-                .map(passengerMapper::toDto)
                 .toList();
 
-        eventPublisher.publishEvent(
-                new PassengerRegisteredEvent(inputPassengers.getBookingId()));
+        List<Passenger> savedPassengers = passengerRepository.saveAll(passengers);
 
-        eventPublisher.publishEvent(
-                new SagaPassengerRegisteredEvent(inputPassengers.getBookingId()));
+        eventPublisher.publishEvent(new PassengerRegisteredEvent(bookingId));
+        eventPublisher.publishEvent(new SagaPassengerRegisteredEvent(bookingId));
 
-        return passengerResponseDtos;
+        return savedPassengers
+                .stream()
+                .map(passengerMapper::toDto)
+                .toList();
     }
 
     @Override
@@ -60,5 +68,6 @@ public class PassengerServiceImpl implements PassengerService {
                 .map(passengerMapper::toDto)
                 .toList();
     }
+
 
 }

@@ -1,10 +1,15 @@
 package com.myproject.service.impl;
 
+import com.myproject.config.KeycloakProperties;
 import com.myproject.dto.LoginRequestDto;
+import com.myproject.dto.RefreshTokenDto;
 import com.myproject.dto.RegisterRequestDto;
-import com.myproject.dto.TokecnResponse;
+import com.myproject.dto.TokenResponse;
+import com.myproject.exception.RefreshTokenException;
 import com.myproject.service.AuthService;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
+@EnableConfigurationProperties(KeycloakProperties.class)
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final RestClient restClient = RestClient.create();
+    private final KeycloakProperties keycloakProperties;
 
     @Override
-    public TokecnResponse login(LoginRequestDto request) {
+    public TokenResponse login(LoginRequestDto request) {
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 
@@ -40,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
                     .body(body)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .retrieve()
-                    .body(TokecnResponse.class);
+                    .body(TokenResponse.class);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,8 +88,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("AUTH CLASS = " + authentication.getClass());
-        System.out.println("AUTH = " + authentication);
         Jwt jwt = ((JwtAuthenticationToken) authentication).getToken();
         return jwt.getSubject();
     }
@@ -93,14 +100,36 @@ public class AuthServiceImpl implements AuthService {
         body.add("password", "456789");
         body.add("grant_type", "password");
 
-        TokecnResponse response = restClient
+        TokenResponse response = restClient
                 .post()
                 .uri("http://127.0.0.1:8180/realms/master/protocol/openid-connect/token")
                 .body(body)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .retrieve()
-                .body(TokecnResponse.class);
+                .body(TokenResponse.class);
 
         return response.access_token();
+    }
+
+    @Override
+    public TokenResponse refresh(RefreshTokenDto refreshTokenDto) {
+        MultiValueMap<String,String> form = new LinkedMultiValueMap<>();
+        form.add("grant_type","refresh_token");
+        form.add("client_id", "travel-agency-client");
+        form.add("refresh_token", refreshTokenDto.refreshToken());
+
+        log.info("Token URL = {}", keycloakProperties.getTokenUrl());
+
+        try{
+            return restClient.post()
+                    .uri("http://127.0.0.1:8180/realms/travel-agency/protocol/openid-connect/token")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(form)
+                    .retrieve()
+                    .body(TokenResponse.class);
+        }catch (Exception e){
+            log.error("Refresh  token failed",e);
+            throw new RefreshTokenException("Failed to refresh token",e);
+        }
     }
 }

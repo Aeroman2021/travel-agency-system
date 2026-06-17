@@ -6,7 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface BookingViewRepository extends JpaRepository<BookingView,Long> {
     Page<BookingView> findBookingViewByCurrentUserId(String currentUserId, Pageable pageable);
+    Optional<BookingView> findBookingViewById(Long bookingId);
 }
