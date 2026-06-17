@@ -1,5 +1,6 @@
 package com.myproject.service.impl;
 
+import com.myproject.exception.ResourceNotFoundException;
 import com.myproject.model.entity.BookingView;
 import com.myproject.repository.BookingViewRepository;
 import com.myproject.service.BookingViewService;
@@ -19,4 +20,14 @@ public class BookingViewServiceImpl implements BookingViewService {
         var pageable = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(pageSize));
         return bookingViewRepository.findBookingViewByCurrentUserId(currentUserId, pageable);
     }
+
+    @Override
+    public BookingView findBookingViewById(Long bookingId) {
+        return bookingViewRepository.findBookingViewById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("%s with id %d not found"
+                        .formatted("Booking", bookingId)));
+
+    }
+
+
 }

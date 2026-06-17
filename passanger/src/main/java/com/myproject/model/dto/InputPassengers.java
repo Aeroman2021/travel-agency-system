@@ -12,5 +12,4 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor
 public class InputPassengers {
     private List<PassengerRequestDto> passengerRequestDtoList;
-    private Long bookingId;
 }
